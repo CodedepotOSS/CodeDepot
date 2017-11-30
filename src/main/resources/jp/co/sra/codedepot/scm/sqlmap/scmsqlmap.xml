@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+ Copyright (c) 2009 SRA (Software Research Associates, Inc.)
+
+ This file is part of CodeDepot.
+ CodeDepot is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.0
+ as published by the Free Software Foundation and appearing in
+ the file GPL.txt included in the packaging of this file.
+
+ CodeDepot is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CodeDepot. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE sqlMapConfig PUBLIC
+	  "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+	  "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+
+    <!-- jdbc properties -->
+    <properties resource="jdbc.properties" />
+
+    <!-- setting -->
+    <settings useStatementNamespaces="true" />
+
+    <!-- dataSource -->
+    <transactionManager type="JDBC" commitRequired="false">
+	<dataSource type="DBCP">
+	    <property name="JDBC.Driver" value="${driver}" />
+	    <property name="JDBC.ConnectionURL" value="${url}" />
+	    <property name="JDBC.Username" value="${username}" />
+	    <property name="JDBC.Password" value="${password}" />
+	    <!-- optional properties -->
+	    <property name="maxActive" value="12" />
+	    <property name="maxIdle" value="6" />
+	    <property name="maxWait" value="60000" />
+	</dataSource>
+    </transactionManager>
+
+    <!-- List of SQL Map XML files. -->
+    <sqlMap resource="jp/co/sra/codedepot/scm/sqlmap/source.xml"/>
+	<sqlMap resource="jp/co/sra/codedepot/scm/sqlmap/batchlog.xml"/>
+	<sqlMap resource="jp/co/sra/codedepot/scm/sqlmap/project.xml"/>
+	<sqlMap resource="jp/co/sra/codedepot/scm/sqlmap/version.xml"/>
+</sqlMapConfig>

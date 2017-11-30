@@ -1,0 +1,241 @@
+<HTML>
+<!--
+ Copyright (c) 2009 SRA (Software Research Associates, Inc.)
+
+ This file is part of CodeDepot.
+ CodeDepot is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.0
+ as published by the Free Software Foundation and appearing in
+ the file GPL.txt included in the packaging of this file.
+
+ CodeDepot is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CodeDepot. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<HEAD>
+	<TITLE>検索文法 - CodeDepot</TITLE>
+	<META http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="css/help.css">
+</HEAD>
+
+<BODY>
+	<DIV class="main_menu">
+		<a class="item" HREF="index.html">ユーザガイド</a>
+		<span class="item">検索文法</span>
+		<A class="item" HREF="admin.html">管理者ガイド</A>
+	</DIV>
+	<DIV id="search" class="container">
+		<DIV class="sub_menu">
+			<A class="item" HREF="#search_intro"><SPAN>はじめに</SPAN></A>
+			<A class="item" HREF="#search_word"><SPAN>ワード検索</SPAN></A>
+			<A class="item" HREF="#search_field"><SPAN>フィールド指定検索</SPAN></A>
+			<A class="item" HREF="#search_complex"><SPAN>組み合わせ検索</SPAN></A>
+			<A class="item" HREF="#search_detail"><SPAN>検索の詳細</SPAN></A>
+		</DIV>
+		<DIV class="body">
+			<DIV id="search_intro">
+				<H2>はじめに</H2>
+				<p>CodeDepot では、ワード単位で検索を行います。 複数のワードは空白文字で区切って入力します。</p>
+				<p>以下にワードの例を示します。</p>
+				<ul class="hlist">
+					<li><tt>random</tt></li>
+					<li><tt>RandomString</tt></li>
+					<li><tt>random_string</tt></li>
+					<li><tt>乱数</tt></li>
+				</ul>
+				<div style="clear: left;"></div>
+				<p>以下の記号文字は特殊記号として扱います。</p>
+				<table class="requirement">
+					<tr>
+						<th>特殊記号</th>
+						<td><tt>: " \ * ? - + &amp; | ! ^ ~ ( ) { } [ ]</tt></td>
+					</tr>
+				</table>
+				<div style="clear: left;"></div>
+				<p>特殊記号を含むワードを検索する場合は、特殊文字の前に "\" 文字を入力します。</p>
+				<ul class="hlist">
+					<li><tt>\(x\+y\)</tt></li>
+					<li><tt>X\:Y</tt></li>
+				</ul>
+				<div style="clear: left;"></div>
+				<p>以下のワードは予約後となっています。</p>
+				<table class="requirement">
+					<tr>
+						<th>予約語</th>
+						<td><tt>AND OR NOT</tt></td>
+					</tr>
+				</table>
+			</DIV>
+			<DIV id="search_word">
+				<H2>ワード検索</H2>
+				<p>CodeDepot では、以下のようなワード検索が行えます。</p>
+				<table>
+					<tr>
+						<th width="25%">検索方法</th>
+						<th width="30%">検索例</th>
+						<th width="45%">説明</th>
+					</tr>
+					<tr>
+						<td>単一ワードの検索</td>
+						<td><tt>random</tt></td>
+						<td>検索したいワードをそのまま入力します。<br/>指定したワードを含むファイルを検索します。</td>
+					</tr>
+					<tr>
+						<td>厳密なワードの検索</td>
+						<td><tt>"Random"</tt></td>
+						<td>検索したいワードをダブルクォート文字(")で囲みます。<br/>大文字/小文字を区別したより厳密なワードを検索します。</td>
+						<tr>
+							<td>ワイルドカード文字による検索</td>
+							<td><tt>test*</tt><br /><tt>*len</tt><br /><tt>str*.c</tt></td>
+							<td>ワイルドカード文字(* および ?)を利用して、ワードの一部の文字列を指定して検索します。<br/>該当するワードを含むファイルを検索します。</td>
+						</tr>
+						<tr>
+							<td>複数ワードの AND 検索</td>
+							<td><tt>random string</tt><br /><tt>random AND string</tt></td>
+							<td>検索したいワードを空白文字または予約語 AND で区切って指定します。<br/>指定した全てのワードを含むファイルを検索します。</td>
+						</tr>
+						<tr>
+							<td>複数ワードの OR 検索</td>
+							<td><tt>random OR string</tt></td>
+							<td>検索したいワードを予約語 OR で区切って指定します。<br/>指定したワードのいずれかを含むファイルを検索します。</td>
+						</tr>
+						<tr>
+							<td>除外ワードの検索</td>
+							<td><tt>random -number</tt></td>
+							<td>除外したいワードの先頭に "-" 文字を入力します。<br /> 指定したワードを含まないファイルを検索します。</td>
+						</tr>
+						<tr>
+							<td>連続したワードの並びを検索</td>
+							<td><tt>"random string"</tt></td>
+							<td>複数のワードをダブルクォート文字(")で囲みます。<br /> 指定したワードが連続するファイルを検索します。</td>
+						</tr>
+						<tr>
+							<td>近接したワードの並びを検索</td>
+							<td><tt>"random * string"</tt><br /><tt>"random ** string"</tt></td>
+							<td>複数のワードをダブルクォート文字(")で囲み、連続しないワードの間にワイルドカード文字(*)を入力します。<br/>指定したワードの並びを含むファイルを検索します。</td>
+						</tr>
+						<tr>
+							<td>括弧文字による検索</td>
+							<td><tt>(Verify OR Check) AND Password</tt></td>
+							<td>括弧文字により検索条件をグループ化します。</td>
+						</tr>
+				</table>
+				<p>ワードの検索では大文字と小文字を区別せずに検索します。</p>
+			</DIV>
+			<DIV id="search_field">
+				<H2>検索フィールド指定検索</H2>
+				<p>CodeDepot では、コードの特定の検索フィールドを指定して絞り込み検索が行えます。</p>
+				<p>検索フィールドを指定するには、検索文字列の前にフィールド名とコロン(:)文字を入力します。</p>
+				<p>以下に検索フィールド指定の例を示します。</p>
+				<ul class="hlist">
+					<li><tt>cls:String</tt></li>
+					<li><tt>cls:test*</tt></li>
+					<li><tt>code:(open AND close)</tt></li>
+					<li><tt>-pkg:java.io.*</tt></li>
+				</ul>
+				<div style="clear: left;"></div>
+				<p>検索フィールドには、以下のフィールド名が指定できます。</p>
+				<table>
+					<tr>
+						<th>フィールド名</th>
+						<th>説明</th>
+					</tr>
+					<tr>
+						<td>any</td>
+						<td>全ての検索フィールドを対象にします。</td>
+					</tr>
+					<tr>
+						<td>cls</td>
+						<td>指定したクラス名のコードを検索対象にします。</td>
+					</tr>
+					<tr>
+						<td>fdef</td>
+						<td>指定した関数名のコードを検索対象にします。</td>
+					</tr>
+					<tr>
+						<td>code</td>
+						<td>コメント、予約語を除くコードを検索対象にします。</td>
+					</tr>
+					<tr>
+						<td>comment</td>
+						<td>コードのコメントを検索対象にします。</td>
+					</tr>
+					<tr>
+						<td>pkg</td>
+						<td>指定したパッケージ名を検索対象にします。</td>
+					</tr>
+					<tr>
+						<td>prj</td>
+						<td>指定したプロジェクトを検索対象にします。</td>
+					</tr>
+					<tr>
+						<td>file</td>
+						<td>指定したファイルのパス名を検索対象にします。</td>
+					</tr>
+					<tr>
+						<td>license</td>
+						<td>指定したライセンス名を検索対象にします。</td>
+					</tr>
+					<tr>
+						<td>outType</td>
+						<td>指定した関数の返却値の型名を検索対象にします。</td>
+					</tr>
+					<tr>
+						<td>inTypes</td>
+						<td>指定した関数の引数の型名を検索対象にします。</td>
+					</tr>
+					<tr>
+						<td>fcall</td>
+						<td>指定した関数名を使用しているコードを検索対象にします。</td>
+					</tr>
+				</table>
+				<p>複数の検索フィールドを同時に指定できます。</p>
+				<ul class="hlist">
+					<li><tt>fdef:verify pkg:*.model</tt></li>
+					<li><tt>cls:Utils -pkg:org.apache.*</tt></li>
+				</ul>
+				<div style="clear: left;"></div>
+				<p>code 検索フィールドには、プログラムの予約語は含まれません。予約語を含めて検索する場合は、any フィールドを利用します。</p>
+				<ul class="hlist">
+					<li><tt>any:static</tt></li>
+					<li><tt>any:"public static"</tt></li>
+				</ul>
+				<div style="clear: left;"></div>
+			</DIV>
+			<DIV id="search_complex">
+				<H2>組み合わせ検索</H2>
+				<p>ワード検索と検索フィールドを組み合わせて検索できます。</p>
+				<p>以下に組み合わせ検索の例を示します。</p>
+				<ul class="vlist">
+					<li><tt>credit validate pkg:org.apache.*</tt></li>
+					<li><tt>base64 encode -license:GPL*</tt></li>
+					<li><tt>"throws *Exception" -cls:*Test</tt></li>
+					<li><tt>prj:(solr lucene) cls:Parser</tt></li>
+					<li><tt>fdef:(check OR verify) cls:entity</tt></li>
+				</ul>
+			</DIV>
+			<DIV id="search_detail">
+				<H2>検索の詳細</H2>
+				<p>CodeDepot の検索では以下の処理を行います。</p>
+				<ul>
+					<li>単純検索ならびにオプション検索では、空白文字や記号文字による区切りだけでなく、CamelCase による区切りを利用してワードを抽出しています。</li>
+					<li>ワードの検索では大文字と小文字を区別せず検索しており、英文のワードでは語尾変化を含んだワードも検索します。ワードをダブルクオート文字で囲んだ場合は、大文字と小文字を区別し、語尾変化を含まない厳密な検索を行います。</li>
+					<li>ファイルに日本語などのマルチバイト文字が含まれている場合は、ファイルの文字コードを判定し、マルチバイト文字２文字の連続をワードとして抽出します。例えば"変更依頼"という文字列は、"変更"、"更依"、"依頼"の３つのワードを抽出しています。
+						<fieldset class="notice">
+							<legend>注意事項</legend>
+							<div>ファイル内容によって文字コードが判定できない場合があります。</div>
+						</fieldset>
+					</li>
+					<li>検索結果やファイル内容では、検索文字をハイライトしますが、ハイライトするのは検索条件に一致した文字ではなく、検索条件に一致したファイル内に含まれる検索文字に一致する箇所全てをハイライトします。</li>
+				</ul>
+			</DIV>
+		</DIV>
+	</DIV>
+</BODY>
+
+</HTML>

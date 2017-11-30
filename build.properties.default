@@ -1,0 +1,37 @@
+# Copyright © 2009 SRA (Software Research Associates, Inc.)
+#
+# This file is part of CodeDepot.
+# CodeDepot is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# CodeDepot is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with CodeDepot.  If not, see <http://www.gnu.org/licenses/>.
+
+
+### data direcotory
+DATA_ROOT=/usr/local/codedepot/data
+
+### database setup
+PGPORT = 5432
+DBNAME = codedepot_db
+DBUSER = codedepot_user
+DBPASS = codedepot_pass
+
+### web setup
+WEBAPP.NAME = codedepot
+
+### solr setup
+INDEX = ${DATA_ROOT}/index
+SOLR_URL = http://localhost:8080/${WEBAPP.NAME}/solr
+
+### data location
+ETC_PATH=${DATA_ROOT}/etc
+SRC_PATH=${DATA_ROOT}/src
+HTML_PATH=${DATA_ROOT}/html

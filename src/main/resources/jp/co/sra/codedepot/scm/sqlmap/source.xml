@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ Copyright (c) 2009 SRA (Software Research Associates, Inc.)
+
+ This file is part of CodeDepot.
+ CodeDepot is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.0
+ as published by the Free Software Foundation and appearing in
+ the file GPL.txt included in the packaging of this file.
+
+ CodeDepot is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CodeDepot. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="source">
+  	<resultMap id="Source" class="jp.co.sra.codedepot.scm.entity.Source">
+    	<result     property="project"          column="project" />
+	    <result     property="path"     		column="path" />
+	    <result     property="lang"     		column="lang" />
+	    <result     property="size"        		column="size" />
+	    <result     property="lines"        	column="lines" />
+	    <result     property="digest"      		column="digest" />
+	    <result     property="ctime"        	column="ctime" />
+	    <result     property="mtime"        	column="mtime" />
+  	</resultMap>
+	<select id="getSources" resultMap="Source" parameterClass="java.util.Map" >
+	 	SELECT
+	 		project
+	 		,path
+	 		,lang
+	 		,COALESCE(size, 0) AS size
+	 		,lines
+	 		,digest
+	 		,ctime
+	 		,mtime
+	 	FROM
+	 		source
+	 	WHERE
+	 	   	project = #project#
+		<isPropertyAvailable prepend="AND" property="lang">
+	 	   	lang = #lang#
+		</isPropertyAvailable>
+		ORDER BY
+			path
+	</select>
+	<delete id="deleteSource" parameterClass="jp.co.sra.codedepot.scm.entity.Source">
+		DELETE FROM source WHERE project = #project# AND path = #path#
+	</delete>
+	<delete id="deleteSourceByProject">
+		DELETE FROM source WHERE project = #project#
+	</delete>
+	<insert id="insertSource" parameterClass="jp.co.sra.codedepot.scm.entity.Source">
+    	INSERT INTO source (project, path, lang, size, lines, digest, ctime, mtime)
+      	VALUES (#project#, #path#, #lang#, #size#, #lines#, #digest#, current_timestamp, #mtime#)
+  	</insert>
+
+  	<update id="updateSource" parameterClass="jp.co.sra.codedepot.scm.entity.Source">
+    	UPDATE source
+      	SET lang = #lang#,
+          	size = #size#,
+          	lines = #lines#,
+          	digest = #digest#,
+          	ctime = current_timestamp,
+          	mtime = #mtime#
+      	WHERE project = #project#
+       		AND  path = #path#
+  	</update>
+  	<select id="selectCount" resultClass="java.lang.Integer">
+  		SELECT count(1) FROM source
+  	</select>
+</sqlMap>

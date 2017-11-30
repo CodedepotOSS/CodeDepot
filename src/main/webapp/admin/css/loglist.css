@@ -1,0 +1,41 @@
+#statusSelect {
+	margin:1px 0;
+	padding:1px 0 0;
+	border-bottom:1px solid #ddd;
+	border-left:1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	border-top:1px solid #7c7c7c;
+	background-color: expression(this.disabled == true?"#e0e0e0":"#FFFFFF");
+	width: 60px;
+}
+
+#titleInput {
+	margin:1px 0;
+	padding:1px 0 0;
+	background-color: expression(this.disabled == true?"#e0e0e0":"#FFFFFF");
+	border-color:#7C7C7C #C3C3C3 #DDDDDD;
+	border-style:solid;
+	border-width:1px;
+	width:150px;
+}
+
+td.td-left{
+    color: #333333;
+	font-family: Helvetica, Verdana,Arial,sans-serif, Tahoma,"ＭＳ ゴシック";
+	font-size: 12px;
+	text-align: left;
+	height:22px;
+}
+
+td.td-right{
+    color: #333333;
+	font-family: Helvetica, Verdana,Arial,sans-serif, Tahoma,"ＭＳ ゴシック";
+	font-size: 12px;
+	text-align: right;
+	height:22px;
+}
+
+.ac_results {
+        text-align: left;
+}
+

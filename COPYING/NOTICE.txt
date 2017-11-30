@@ -1,0 +1,37 @@
+License Notes
+
+This software includes software distributed under following
+licenses.
+
+
+Includes following software licensed under APACHE_LICENSE.txt:
+apache-solr, apache-lucene, apache-commons, tomcat,
+geronimo-stax-api, ibatis, stax-utils, wstx-asl, quartz,
+easymock
+
+
+Includes following software licensed under BSD_LICENSE.txt:
+stax-utils, postgresql.jar
+
+
+Includes following software licensed under epl-v10.html:
+org.eclipse.core.contenttype, org.eclipse.core.jobs
+org.eclipse.core.resources, org.eclipse.core.runtime
+org.eclipse.equinox.common, org.eclipse.equinox.preference
+org.eclipse.osgi, org.eclipse.text, jdimodel
+
+
+Includes following software licensed under JSON_LICENSE.txt:
+json.jar
+
+
+Includes following software licensed under MIT_LICENSE.txt:
+slf4j, jQuery, jQuery-plugins
+
+
+Includes following software licensed under MPL_1.1.txt:
+juniversalchardet,
+
+
+Includes following software licensed under cpl-v10.html:
+org.eclipse.cdt.core, org.eclipse.cdt.tests, junit

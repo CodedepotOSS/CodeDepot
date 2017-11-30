@@ -1,0 +1,141 @@
+#btnDel {
+	display:none;
+}
+
+.loginContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	flex-wrap: wrap;
+	width: 100vw;
+	height: 100vh;
+}
+.loginContainer td {
+	text-align: center;
+}
+.loginContainer .logo {
+}
+.loginContainer .wrongfont {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	min-height: 4em;
+}
+
+#loginForm {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#userName, #userPwd {
+	width:280px;;
+}
+
+input.inputName {
+	border-bottom:1px solid #ddd;
+	border-left:1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	border-top:1px solid #7c7c7c;
+	width: 150px;
+}
+
+.accountEdit_input{
+	width: 400px;
+}
+
+.table-search-result td.cbx {
+	width:4%;
+	text-align: center;
+	height:22px;
+}
+.table-search-result th.cbx {
+	width:4%;
+	text-align: center;
+}
+.table-search-result td.No {
+	width:4%;
+	text-align: right;
+	height:22px;
+}
+.table-search-result td.account {
+	width:13%;
+	height:22px;
+}
+.table-search-result td.mailAddress {
+	width:16%;
+	height:22px;
+}
+.table-search-result td.role {
+    width:16%;
+    height:22px;
+}
+.table-search-result td.active {
+	width:5%;
+	height:22px;
+	text-align: center;
+}
+.table-search-result td.comment {
+	width:36%;
+	height:22px;
+}
+
+input.password {
+	width:70%;
+}
+
+.imgwidthHeight{
+	width:20px;
+	height:20px;
+}
+
+input.text_readOnly
+{
+	border-bottom:1px solid #ddd;
+	border-left:1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	border-top:1px solid #7c7c7c;
+	color:#4B75B3;
+	font-size:100%;
+	margin:0;
+	padding:2px 0;
+	background-color: #e0e0e0;
+	vertical-align:middle;
+}
+
+select.select_readOnly
+{
+	color:#4B75B3;
+	font-size:100%;
+	margin:1px 0;
+	padding:1px 0 0;
+	border-bottom:1px solid #ddd;
+	border-left:1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	border-top:1px solid #7c7c7c;
+	background-color: #e0e0e0;
+}
+
+textarea.textarea_readOnly
+{
+	border-bottom:1px solid #ddd;
+	border-left:1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	border-top:1px solid #7c7c7c;
+	color:#333;
+	font-family:Helvetica, Verdana,Arial,sans-serif, Tahoma,"ＭＳ ゴシック";
+	font-size:100%;
+	margin:0;
+	background-color: #e0e0e0;
+}
+
+#btnDel {
+	padding-right:5px;
+}
+
+.email-notice {
+	color: #ff597c;
+}

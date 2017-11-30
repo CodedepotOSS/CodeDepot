@@ -1,0 +1,191 @@
+#password {
+	BORDER: 1px outset;
+	BACKGROUND: #FFFFFF;
+	border-color: #4b75b3;
+	padding-left: 0px;
+	margin:0;
+}
+
+.pro-srch-table {
+	font-size: 16px;
+	width:100%;
+}
+
+input.inputTitle {
+	border-bottom:1px solid #ddd;
+	border-left:1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	border-top:1px solid #7c7c7c;
+	width: 150px;
+}
+
+.pro-srch-title {
+	width:60%;
+}
+
+.pro-buttom-tdblank {
+	width: 11%;
+}
+
+.pro-buttom-tdinsert {
+	width: 11%;
+}
+
+.pro-buttom-tdbig {
+	width: 73%;
+}
+
+.pro-result-tdno {
+	width: 4%;
+}
+
+.pro-result-tdname {
+	width: 15%;
+}
+
+.pro-result-tdheader {
+	width: 15%;
+}
+
+.pro-result-tdrestrict {
+	width: 6%;
+}
+
+.pro-result-run {
+	width: 15%;
+}
+
+.pro-result-tddescription {
+	width: 40%;
+}
+
+.pro-result-tdtime {
+	width: 20%;
+}
+
+td.td-left{
+    color: #333333;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-align: left;
+	height:22px;
+}
+
+td.td-right{
+    color: #333333;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-align: right;
+	height:22px;
+}
+
+td.td-center{
+    color: #333333;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-align: center;
+	height:22px;
+}
+
+textarea.textarea_readOnly
+{
+	border-bottom:1px solid #ddd;
+	border-left:1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	border-top:1px solid #7c7c7c;
+	color:#4B75B3;
+	font-family:Arial, ＭＳ Ｐゴシック;
+	font-size:11px;
+	margin:0;
+	background-color: #e0e0e0;
+}
+
+input.text_readOnly
+{
+	border-bottom:1px solid #ddd;
+	border-left:1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	border-top:1px solid #7c7c7c;
+	color:#4B75B3;
+	font-size:11px;
+	margin:0;
+	padding:2px 0;
+	background-color: #e0e0e0;
+	vertical-align:middle;
+}
+
+select.select_readOnly
+{
+	color:#4B75B3;
+	font-size:11px;
+	margin:1px 0;
+	padding:1px 0 0;
+	border-bottom:1px solid #ddd;
+	border-left:1px solid #c3c3c3;
+	border-right:1px solid #c3c3c3;
+	border-top:1px solid #7c7c7c;
+	background-color: #e0e0e0;
+}
+
+#crontab_sample
+{
+	font-size: 9px;
+	width: 80%;
+	padding-bottom:0px;
+}
+
+#crontab_sample span
+{
+	width: 4em;
+}
+
+#crontab_sample table
+{
+	color: #6a6a6a;
+	margin: 0px 0px;
+	width: 90%;
+}
+
+#crontab_sample table th
+{
+	vertical-align: top;
+	white-space: nowrap;
+	padding: 0px 0px 0em 1em;
+}
+
+#crontab_sample table td
+{
+	padding: 0px 0.5em;
+	white-space: nowrap;
+}
+
+#ignores_sample
+{
+	font-size: 9px;
+	white-space: nowrap;
+	color:#6a6a6a;
+	padding-left: 1em;
+	width: 95%;
+}
+
+#permit_info
+{
+	margin: 0px 1em ;
+	padding: 0px 1em 0px 0px;
+	font-size: 9px;
+	width: 80%;
+	color:#6a6a6a;
+}
+
+.job_running {
+	font-weight: bolder;
+	color: #ff5a00;
+}
+.job_waiting {
+	font-weight: bolder;
+	color: #ff8a00;
+}
+.job_abort {
+	font-weight: bolder;
+	color: #ff0000;
+}

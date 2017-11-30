@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2009 SRA (Software Research Associates, Inc.)
+
+ This file is part of CodeDepot.
+ CodeDepot is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.0
+ as published by the Free Software Foundation and appearing in
+ the file GPL.txt included in the packaging of this file.
+
+ CodeDepot is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CodeDepot. If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE sqlMap
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="project">
+
+    <resultMap id="checkProject" class="jp.co.sra.codedepot.admin.db.entity.ProjectInfoEntity">
+        <result     property="name"     	     column="name" />
+    </resultMap>
+
+    <resultMap id="getLicense" class="jp.co.sra.codedepot.admin.db.entity.ProjectInfoEntity">
+        <result     property="license"     	     column="license" />
+    </resultMap>
+
+   	<select id="selectLicense" resultMap="getLicense">
+    SELECT distinct(license) FROM project   <!-- ライセンス名 -->
+      WHERE del_flag = false  <!-- 削除フラグ -->
+      ORDER BY license
+    </select>
+
+    <select id="selectProject" parameterClass="java.util.Map" resultMap="checkProject">
+    SELECT name FROM project
+      WHERE LOWER(title) = #title#   <!-- プロジェクトの題名 -->
+      		and del_flag = false  <!-- 削除フラグ -->
+      <isPropertyAvailable prepend="AND" property="name">
+				name != #name#   <!-- プロジェクト識別子名 -->
+	  </isPropertyAvailable>
+    </select>
+
+    <select id="checkActive" resultMap="checkProject">
+    SELECT name FROM project
+      WHERE name = #value#   <!-- プロジェクト識別子名 -->
+      and del_flag = false   <!-- 削除フラグ -->
+    </select>
+
+
+    <select id="selectProjectName" resultClass="java.lang.Integer">
+    SELECT count(1) FROM project
+      WHERE name = #name#
+    </select>
+
+    <!-- プロジェクト管理テーブルの更新処理 -->
+    <update id="updateTableProject" parameterClass="java.util.Map">
+        UPDATE PROJECT SET
+         title = #title#        <!-- プロジェクト名 -->
+        ,description = #description#        <!-- 概要 -->
+        ,license = #license#        <!-- ライセンス名 -->
+        ,site_url = #site_url#        <!-- プロジェクトポータルのＵＲＬ -->
+        ,download_url = #download_url#        <!-- ダウンロードサイトのＵＲＬ -->
+        ,src_type = #src_type#        <!-- プロジェクトの指定方法 -->
+        ,src_path = #src_path#        <!-- プロジェクトのパスまたはURL -->
+        ,scm_user = #scm_user#        <!-- SCMのログインユーザ名 -->
+        ,scm_pass = #scm_pass#        <!-- SCMのログインパスワード -->
+        ,crontab = #crontab#        <!-- 検索インデックス更新処理の開始時刻 -->
+        ,ignores = #ignores#        <!-- 検索対象除外拡張子 -->
+        ,admin = #admin#        <!-- プロジェクト管理者のユーザID -->
+        ,restricted = #restricted#        <!-- アクセス制御の有無 -->
+        ,mtime = NOW()        <!-- 最終変更時刻 -->
+        ,muserid = #muserid#        <!-- 更新者 -->
+        WHERE name = #name#         <!-- プロジェクト識別子名 -->
+    </update>
+
+    <!-- プロジェクト管理テーブルの削除処理 -->
+    <update id="deleteTableProject" parameterClass="java.util.Map">
+        UPDATE PROJECT SET
+         del_flag = TRUE        <!-- 削除フラグ -->
+        ,mtime = NOW()          <!-- 最終変更時刻 -->
+        ,muserid = #muserid#    <!-- 更新者 -->
+        WHERE name = #name#     <!-- プロジェクト識別子名 -->
+         and del_flag = false   <!-- 削除フラグ -->
+    </update>
+
+    <!-- アクセス権限削除 -->
+    <delete id="deleteTablePermit" parameterClass="java.util.Map">
+        DELETE FROM
+            PERMIT        <!-- アクセス権限テーブル -->
+        WHERE
+            PROJECT = #name#   <!-- 優先転送先テーブル.プロジェクト識別子=｛パラメータ.プロジェクト識別子｝ -->
+    </delete>
+
+    <!-- アクセス権限登録 -->
+    <insert id="inertTablePermit" parameterClass="java.util.Map">
+        INSERT INTO PERMIT <!-- アクセス権限テーブル -->
+              (
+              MID              <!-- アカウントID -->
+              ,PROJECT        <!-- プロジェクト識別子 -->
+              ) VALUES (
+                 #mid#         <!-- アカウントID -->
+                ,#project#    <!-- プロジェクト識別子 -->
+              )
+    </insert>
+
+    <!-- プロジェクト情報登録 -->
+    <insert id="inertTableProject" parameterClass="java.util.Map">
+        INSERT INTO PROJECT <!-- プロジェクト情報テーブル -->
+              (
+               name               <!-- プロジェクト識別子名 -->
+              ,title              <!-- プロジェクトの題名 -->
+              ,description        <!-- プロジェクトの説明 -->
+              ,license            <!-- プロジェクトのライセンス -->
+              ,site_url           <!-- プロジェクトポータルのＵＲＬ -->
+              ,download_url       <!-- ダウンロードサイトのＵＲＬ -->
+              ,restricted         <!-- アクセス制御の有無 -->
+              ,src_type           <!-- プロジェクトの指定方法 -->
+              ,src_path           <!-- プロジェクトのパスまたはURL -->
+              ,scm_user           <!-- SCMのログインユーザ名 -->
+              ,scm_pass           <!-- SCMのログインパスワード -->
+              ,crontab            <!-- 検索インデックス更新処理の開始時刻 -->
+              ,ignores            <!-- 検索対象除外拡張子 -->
+              ,admin              <!-- プロジェクト管理者のユーザID -->
+              ,del_flag           <!-- 削除フラグ -->
+              ,cuserid            <!-- 作成者 -->
+              ,ctime              <!-- 作成時刻 -->
+              ,muserid            <!-- 更新者 -->
+              ,mtime              <!-- 更新時刻 -->
+              ) VALUES (
+               #name#               <!-- プロジェクト識別子名 -->
+              ,#title#              <!-- プロジェクトの題名 -->
+              ,#description#        <!-- プロジェクトの説明 -->
+              ,#license#            <!-- プロジェクトのライセンス -->
+              ,#site_url#           <!-- プロジェクトポータルのＵＲＬ -->
+              ,#download_url#       <!-- ダウンロードサイトのＵＲＬ -->
+              ,#restricted#         <!-- アクセス制御の有無 -->
+              ,#src_type#           <!-- プロジェクトの指定方法 -->
+              ,#src_path#           <!-- プロジェクトのパスまたはURL -->
+              ,#scm_user#           <!-- SCMのログインユーザ名 -->
+              ,#scm_pass#           <!-- SCMのログインパスワード -->
+              ,#crontab#            <!-- 検索インデックス更新処理の開始時刻 -->
+              ,#ignores#            <!-- 検索対象除外拡張子 -->
+              ,#admin#              <!-- プロジェクト管理者のユーザID -->
+              ,FALSE                <!-- 削除フラグ -->
+              ,#cuserid#            <!-- 作成者 -->
+              ,NOW()              <!-- 作成時刻 -->
+              ,#muserid#            <!-- 更新者 -->
+              ,NOW()              <!-- 更新時刻 -->
+              )
+    </insert>
+
+  <select id="selectProjectCount" parameterClass="java.util.Map"
+  		resultClass="java.lang.Integer">
+	    	SELECT
+	    		count(1)
+	    	FROM
+	    		project pro left join member mem on pro.admin = mem.id
+      		WHERE
+      			pro.del_flag = false  <!-- 削除フラグ -->
+   			<isPropertyAvailable prepend="AND" property="title">
+				LOWER(pro.title) like '%'||#title#||'%'  <!-- プロジェクトの題名 -->
+			</isPropertyAvailable>
+			<isEqual prepend="AND" property="loginRole" compareValue="1">
+				pro.admin = #loginId#   <!-- プロジェクト管理者のユーザID -->
+			</isEqual>
+  	</select>
+
+  	<select id="selectProjectList" parameterClass="java.util.Map"
+  		resultClass="jp.co.sra.codedepot.admin.db.entity.ProjectInfoEntity">
+	    	SELECT
+	    		pro.name as name,  				<!-- プロジェクト識別子名 -->
+	    		pro.title as title,   			<!-- プロジェクトの題名 -->
+	    		mem.username as username,		<!-- ログイン名 -->
+	    		pro.restricted as restricted,	<!-- アクセス制御の有無 -->
+	    		pro.description as description, <!-- プロジェクトの説明 -->
+	    		pro.crontab as crontab,
+	    		pro.ignores as ignores,
+	    		pro.indexed_at as indexed_at
+	    	FROM
+	    		project pro left join member mem on pro.admin = mem.id
+      		WHERE
+      			pro.del_flag = false                     <!-- 削除フラグ -->
+   			<isPropertyAvailable prepend="AND" property="title">
+				LOWER(pro.title) like '%'||#title#||'%'  <!-- プロジェクトの題名 -->
+			</isPropertyAvailable>
+			<isEqual prepend="AND" property="loginRole" compareValue="1">
+				pro.admin = #loginId#                    <!-- プロジェクト管理者のユーザID -->
+			</isEqual>
+			order by title
+			<isPropertyAvailable property="limit">
+				LIMIT #limit#
+			</isPropertyAvailable>
+			<isPropertyAvailable property="offset">
+				OFFSET #offset#
+			</isPropertyAvailable>
+  	</select>
+  	<select id="selectProjectInfo" resultClass="jp.co.sra.codedepot.admin.db.entity.ProjectInfoEntity">
+	    	SELECT
+	    		title,          <!-- プロジェクトの題名 -->
+	    		restricted,     <!-- アクセス制御の有無 -->
+	    		description,    <!-- プロジェクトの説明 -->
+	    		site_url,       <!-- ダウンロードサイトのＵＲＬ -->
+	    		download_url,   <!-- ダウンロードサイトのＵＲＬ -->
+	    		license,        <!-- プロジェクトのライセンス -->
+	    		ignores,        <!-- 除外ファイル -->
+	    		indexed_at
+	    	FROM
+	    		project
+      		WHERE
+      			del_flag = false
+      			and name=#value#
+  	</select>
+
+    <select id="selectAllProjectInfo" resultClass="jp.co.sra.codedepot.admin.db.entity.ProjectInfoEntity">
+            SELECT p.*,m.username
+            FROM
+                project p LEFT JOIN member m ON p.admin = m.id
+            WHERE
+                p.del_flag = false
+                AND name = #name#                           <!-- プロジェクト識別子名 -->
+    </select>
+
+    <select id="selectAllProjectInfoByTitle" resultClass="jp.co.sra.codedepot.admin.db.entity.ProjectInfoEntity">
+            SELECT p.*,m.username
+            FROM
+                project p LEFT JOIN member m ON p.admin = m.id
+            WHERE
+                p.del_flag = false
+                AND p.title = #title#                           <!-- プロジェクト名 -->
+    </select>
+
+    <!-- アクセス権限ユーザの検索 -->
+    <select id="selectPermitUser" parameterClass="java.util.Map" resultClass="jp.co.sra.codedepot.admin.db.entity.ProjectInfoEntity">
+        SELECT
+               p.mid as id
+              ,m.username
+        FROM
+             permit p, member m
+        WHERE
+             p.mid = m.id
+             AND p.project = #project#
+    </select>
+        <!-- 検索インデックス更新処理の開始時刻の検索 -->
+    <select id="selectAllCrontab" resultClass="jp.co.sra.codedepot.admin.db.entity.ProjectInfoEntity">
+    	<![CDATA[
+	        SELECT
+	               title,
+	               crontab
+	        FROM
+	             project
+	        WHERE
+	             del_flag = false
+	             AND crontab is not null
+	             AND trim(crontab) <> ''
+	    ]]>
+    </select>
+
+    <select id="selectPermitPrjInfo" parameterClass="java.lang.Integer"
+		resultClass="jp.co.sra.codedepot.admin.db.entity.ProjectInfoEntity">
+	SELECT
+		name, title, license, restricted, indexed_at
+	FROM
+		project
+	WHERE
+		del_flag = false
+		AND ( restricted = false
+		      OR name IN ( SELECT pj.name FROM permit pe ,project pj
+                                   WHERE pe.project = pj.name AND pe.mid = #value#)
+		    )
+	ORDER BY title
+    </select>
+</sqlMap>

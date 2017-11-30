@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="codedepot" version="2.0">
+    <types>
+
+        <fieldType name="srcText" class="solr.TextField" positionIncrementGap="20">
+            <analyzer type="index">
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+            <analyzer type="query"> <!-- same as index only -->
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+        </fieldType>
+
+        <fieldType name="codeText" class="solr.TextField" positionIncrementGap="20">
+            <analyzer type="index">
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+                <filter class="solr.WordDelimiterFilterFactory"
+				                generateWordParts="1"
+				                splitOnCaseChange="1"
+				                preserveOriginal="1"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.StopFilterFactory"
+				                words="stopwords.txt"/>
+                <filter class="solr.LengthFilterFactory"
+				                min="2" max="1024"/>
+            </analyzer>
+            <analyzer type="query"> <!-- added SynonymFilter -->
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+                <filter class="solr.WordDelimiterFilterFactory"
+				                generateWordParts="1"
+				                splitOnCaseChange="1"
+				                preserveOriginal="1"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.SynonymFilterFactory"
+				                synonyms="code_query_synonyms.txt"/>
+                <filter class="solr.StopFilterFactory"
+				                words="stopwords.txt"/>
+                <filter class="solr.LengthFilterFactory"
+				                min="2" max="1024"/>
+            </analyzer>
+        </fieldType>
+
+        <fieldType name="typeText" class="solr.TextField">
+            <analyzer type="index" class="jp.co.sra.codedepot.index.TypeIndexAnalyzer"/>
+            <!--
+                <tokenizer class="jp.co.sra.codedepot.index.TypeTokenizerFactory"/>
+                <filter class="jp.co.sra.codedepot.index.TypeFQNSplitFilterFactory"/>
+                </analyzer>
+                -->
+            <analyzer type="query" class="jp.co.sra.codedepot.index.TypeQueryAnalyzer"/>
+            <!--
+                <tokenzier class="jp.co.sra.codedepot.index.TypeTokenizerFactory"/>
+                </analyzer>
+                -->
+        </fieldType>
+
+        <fieldType name="commentText" class="solr.TextField" positionIncrementGap="50">
+            <analyzer type="index">
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+                <filter class="solr.WordDelimiterFilterFactory"
+				                generateWordParts="1"
+				                splitOnCaseChange="1"
+                                preserveOriginal="1"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.EnglishPorterFilterFactory" protected="protwords.txt"/>
+                <filter class="solr.StopFilterFactory"
+				                words="stopwords.txt"/>
+                <filter class="solr.LengthFilterFactory"
+                                min="2" max="1024"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+                <filter class="solr.WordDelimiterFilterFactory"
+				                generateWordParts="1"
+				                splitOnCaseChange="1"
+                                preserveOriginal="1"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.EnglishPorterFilterFactory" protected="protwords.txt"/>
+                <filter class="solr.StopFilterFactory"
+				                words="stopwords.txt"/>
+                <filter class="solr.SynonymFilterFactory"
+				                synonyms="comment_query_synonyms.txt"/>
+                <filter class="solr.LengthFilterFactory"
+                                min="2" max="1024"/>
+            </analyzer>
+        </fieldType>
+
+        <fieldType name="nameText" class="solr.TextField" positionIncrementGap="10">
+            <analyzer type="index">
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+                <filter class="solr.WordDelimiterFilterFactory"
+				                generatedWordParts="1"
+				                splitOnCaseChange="1"
+				                preserveOriginal="1"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+                <filter class="solr.WordDelimiterFilterFactory"
+				                generatedWordParts="1"
+				                splitOnCaseChange="1"
+				                preserveOriginal="1"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+        </fieldType>
+
+        <fieldType name="fcallText" class="solr.TextField" positionIncrementGap="10">
+            <analyzer type="index">
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+                <filter class="jp.co.sra.codedepot.index.TypeFQNSplitFilterFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+        </fieldType>
+
+        <fieldType name="cloneToken" class="solr.TextField">
+            <analyzer type="index">
+                <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+                <filter class="jp.co.sra.codedepot.index.CloneTokenFilterFactory"/>
+            </analyzer>
+            <!--  no query analyzer is used because clone query has to be tokenized by
+                  CloneSearchHandler itself after knowing the language -->
+        </fieldType>
+
+        <fieldType name="keyword" class="solr.StrField"
+        				omitNorms="true" sortMissingLast="true" multiValued="false" omitTermFreqAndPositions="true">
+            <analyzer>
+                <tokenizer class="solr.KeywordTokenizerFactory"/>
+            </analyzer>
+        </fieldType>
+
+        <fieldType name="lowerCaseString" class="solr.TextField"
+                        omitNorms="true" sortMissingLast="true" multiValued="false" omitTermFreqAndPositions="true">
+            <analyzer type="index">
+                <tokenizer class="solr.KeywordTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="solr.KeywordTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+
+        </fieldType>
+
+        <fieldType name="casedString" class="solr.TextField"
+                        omitNorms="false" sortMissingLast="true" multiValued="true" omitTermFreqAndPositions="true">
+            <analyzer type="index">
+                <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+            </analyzer>
+
+        </fieldType>
+
+        <fieldType name="srcString" class="solr.TextField"
+		 omitNorms="false" sortMissingLast="true" multiValued="true" omitTermFreqAndPositions="true">
+            <analyzer type="index">
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="jp.co.sra.codedepot.index.CJKTokenizerFactory"/>
+            </analyzer>
+        </fieldType>
+
+
+
+        <fieldType name="string" class="solr.StrField"
+			 			sortMissingLast="true" omitNorms="true"/>
+        <fieldType name="int" class="solr.IntField" omitNorms="true"/>
+
+    </types>
+
+    <fields>
+        <field name="id" type="keyword" indexed="true" stored="true" compressed="true"/>
+
+        <field name="pid" type="keyword" indexed="true" stored="true" />
+
+        <field name="permission" type="lowerCaseString" indexed="true" stored="false"/>
+
+        <field name="location" type="lowerCaseString" indexed="true" stored="true" compressed="true"/>
+        <field name="locationtxt" type="nameText" indexed="true" stored="false"/>
+
+        <field name="license" type="lowerCaseString" indexed="true" stored="true"/>
+
+        <field name="lang" type="lowerCaseString" indexed="true" stored="false"/>
+
+        <field name="prj" type="lowerCaseString" indexed="true" stored="true"/>
+
+        <field name="unit" type="lowerCaseString" indexed="true" stored="false" />
+
+        <field name="pkg" type="lowerCaseString" indexed="true" stored="true" />
+
+        <!-- yunwen 22jul09 clsstr may not be needed at all -->
+        <field name="clsstr" type="casedString" indexed="true" stored="true"/>
+        <field name="cls" type="nameText" indexed="true" stored="false"/>
+
+        <!-- yunwen 22jul09 fdefstr may not be needed at all -->
+        <field name="fdefstr" type="casedString" indexed="true" stored="true"/>
+        <field name="fdef" type="nameText" indexed="true" stored="false"/>
+
+        <!-- yunwen 22jul09 we may need a FQN fcall field to search class.method -->
+        <field name="fcall" type="fcallText" indexed="true" stored="false" />
+
+        <!-- yunwen 22Oct10 make exact search possible -->
+        <field name="codestr" type="casedString" indexed="true" stored="false"/>
+        <field name="code" type="codeText" indexed="true" stored="false"/>
+
+        <field name="comment" type="commentText" indexed="true" stored="false" />
+
+        <!-- field name="src" type="srcString" indexed="true" stored="true" multiValued="true" compressed="true"/ -->
+        <field name="src" type="srcString" indexed="true" stored="true" compressed="true"/>
+
+        <!-- for debug store two signature fields on temporarily, change stored to false -->
+        <field name="outType" type="typeText" indexed="true" stored="true" />
+
+        <field name="inTypes" type="typeText" indexed="true" stored="true" />
+        <!--  don't forget turn it off before release test. -->
+
+        <field name="clonetkn" type="cloneToken" indexed="true" stored="false"/>
+
+        <field name="begin" type="int" indexed="false" stored="true"/>
+
+        <!-- dummy fields to be used for search -->
+        <field name="any" type="nameText" indexed="true" stored="false"/>
+
+        <!-- dummy fields to be used for search -->
+        <field name="key" type="keyword" indexed="true" stored="false"/>
+
+        <!-- field name="file" type="string" indexed="false" stored="false"/-->
+        <!-- field name="ns" type="nameText" indexed="false" stored="false"/-->
+    </fields>
+
+    <!-- using own similarity for signature matching -->
+    <similarity class="jp.co.sra.codedepot.search.CodeDepotSimilarity"/>
+
+    <copyField source="fdef" dest="fdefstr"/>
+    <copyField source="cls" dest="clsstr"/>
+    <copyField source="location" dest="locationtxt"/>
+    <copyField source="code" dest="codestr"/>
+
+    <defaultSearchField>any</defaultSearchField>
+    <uniqueKey>id</uniqueKey>
+    <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
+    <solrQueryParser defaultOperator="AND"/>
+</schema>

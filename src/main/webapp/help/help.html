@@ -1,0 +1,156 @@
+<div id="simpleSearchHelp">
+	<div class="bar"></div>
+	<div class="helpcontent">
+		<h2>単純検索</h2>
+
+		<dl>
+			<dt> ワードの検索:</dt>
+			<dd> random </dd>
+
+			<dt> 厳密なワードの検索 </dt>
+			<dd> "Random" </dd>
+
+			<dt> test で始まるワードの検索</dt>
+			<dd> test* </dd>
+
+			<dt> 複数ワードの AND 検索</dt>
+			<dd> random password <br /> random AND password</dd>
+
+			<dt> 複数ワードの OR 検索</dt>
+			<dd> random OR password </dd>
+
+			<dt> 指定したワードを除外して検索</dt>
+			<dd> random -number </dd>
+
+			<dt> 連続したワードの検索</dt>
+			<dd>"random string"</dd>
+
+			<dt> 非連続なワードの並びを検索</dt>
+			<dd>"implements * Serializable"<br /> "implements ** Serializable"</dd>
+
+			<dt>クラス名の検索</dt>
+			<dd>cls:Builder</dd>
+
+			<dt>指定したパッケージからの検索</dt>
+			<dd>pkg:org.apache.*</dd>
+
+			<dt>指定したパッケージ以外からの検索</dt>
+			<dd>-pkg:java.*</dd>
+
+			<dt>複数のプロジェクトからの検索</dt>
+			<dd>prj:(lucene OR solr)</dd>
+
+			<dt>組み合わせによる検索</dt>
+			<dd>credit validate pkg:org.apache.*<br /> base64 encode -license:GPL*</dd>
+
+		</dl>
+	</div>
+</div>
+
+<div id="advSearchHelp" style="display: none;">
+	<div class="bar"></div>
+	<div class="helpcontent">
+		<h2>オプション検索</h2>
+
+		<h3>検索フィールド</h3>
+
+		<table>
+			<tr>
+				<th>any</th>
+				<td>全てのフィールド</td>
+			</tr>
+
+			<tr>
+				<th>comment</th>
+				<td>プログラム中のコメント部分</td>
+			</tr>
+
+			<tr>
+				<th>code</th>
+				<td>コメント以外のコード</td>
+			</tr>
+
+			<tr>
+				<th>class name</th>
+				<td>クラス名の定義</td>
+			</tr>
+
+			<tr>
+				<th>function name</th>
+				<td>関数/メソッド名の定義</td>
+			</tr>
+
+			<tr>
+				<th>function call</th>
+				<td>呼び出された関数やメソッド</td>
+			</tr>
+
+			<tr>
+				<th>package</th>
+				<td>パッケージ名</td>
+			</tr>
+
+			<tr>
+				<th>project</th>
+				<td>プロジェクトの名称</td>
+			</tr>
+
+			<tr>
+				<th>file</th>
+				<td>ファイル名</td>
+			</tr>
+
+			<tr>
+				<th>license</th>
+				<td>プロジェクトのライセンス</td>
+			</tr>
+		</table>
+
+		<h3>検索文字列</h3>
+		<table>
+			<tr>
+				<td>
+					<dl>
+						<dt>ワードを検索</dt>
+						<dd>random</dd>
+
+						<dt>複数のワードを検索</dt>
+						<dd>random string</dd>
+
+						<dt>複数のワードのいずれかを検索</dt>
+						<dd>random OR string</dd>
+
+						<dt>特定のワードを除外して検索</dt>
+						<dd>random -number</dd>
+
+						<dt>ワードの並びを検索</dt>
+						<dd>"random password"</dd>
+
+						<dt>複雑な検索</dt>
+						<dd>(Verify OR Check) AND Credit</dd>
+					</dl>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div id="cloneSearchHelp" style="display: none;">
+	<div class="bar"></div>
+	<div class="helpcontent">
+		<h2>クローン検索</h2>
+
+		<p>クローン検索では、コードの断片を入力します。</p>
+
+		<p>クローン検索は、プログラム構造が類似したコードを検索します。コメント部分が異なっていたり、コードの変数名や関数名が異なっているコードも検索します。</p>
+
+		<p>厳密度の設定を低く設定すると、1、2行異なるコードも検索します。</p>
+	</div>
+</div>
+<div id="noteSearchHelp" style="display: none;">
+	<div class="bar"></div>
+	<div class="helpcontent">
+		<h2>ノート検索</h2>
+		<p>ノート検索では、記入したノートの内容を部分文字列一致で検索します。</p>
+	</div>
+</div>

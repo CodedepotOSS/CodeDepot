@@ -1,0 +1,12 @@
+#* 
+comments
+file: control.vm
+The control template that controls web page generations
+*#
+
+$generator.parse("search.html.vm", "search.html")
+
+
+
+
+

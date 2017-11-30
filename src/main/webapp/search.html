@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<!--
+ Copyright (c) 2009 SRA (Software Research Associates, Inc.)
+
+ This file is part of CodeDepot.
+ CodeDepot is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.0
+ as published by the Free Software Foundation and appearing in
+ the file GPL.txt included in the packaging of this file.
+
+ CodeDepot is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CodeDepot. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<head>
+	<title>CodeDepot</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.7.1.redmond.css">
+	<link rel="stylesheet" type="text/css" href="css/prog.css">
+	<link rel="stylesheet" type="text/css" href="css/code.css">
+	<link rel="stylesheet" type="text/css" href="css/note.css">
+	<link rel="stylesheet" type="text/css" href="css/search.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css">
+
+	<script lang="javascript" type="text/javascript" src="js/lib/jquery-1.3.2.min.js"></script>
+	<script lang="javascript" type="text/javascript" src="js/lib/jquery-ui-1.7.1.min.js"></script>
+	<script lang="javascript" type="text/javascript" src="js/lib/jquery.scrollTo-min.js"></script>
+	<script lang="javascript" type="text/javascript" src="js/lib/utils.js"></script>
+	<script type="text/javascript" src="js/lib/jquery.dimensions.js"></script>
+	<script type="text/javascript" src="js/lib/jquery.bgiframe.js"></script>
+	<script type="text/javascript" src="js/lib/jquery.autocomplete.min.js"></script>
+	<script type="text/javascript" src="js/lib/jquery.cookie.js"></script>
+
+	<script lang="jsp" type="text/javascript" src="jsp/session.jsp"></script>
+	<script lang="jsp" type="text/javascript" src="admin/note/noteServletInfo.jsp"></script>
+	<script lang="javascript" type="text/javascript" src="js/languageList.js"></script>
+	<script lang="javascript" type="text/javascript" src="js/codedepot.js"></script>
+	<script lang="javascript" type="text/javascript" src="js/projectAndNote.js"></script>
+	<script lang="javascript" type="text/javascript" src="js/pane.js"></script>
+	<script lang="javascript" type="text/javascript" src="js/advSearch.js"></script>
+	<script lang="javascript" type="text/javascript" src="js/userManager.js"></script>
+	<script lang="javascript" type="text/javascript" src="js/cloneSearch.js"></script>
+	<script lang="javascript" type="text/javascript">
+		$("#infoContainer").ajaxError(function(event, xhr, ajaxOptions, thrownError) {
+			defaultStatus = "ajaxError: " + xhr.status;
+			alert("ajaxError: " + xhr.statusText);
+		});
+
+		$(document).ready(function() {
+			/* set initial info */
+			setUserInfo();
+			/*set active objs*/
+			initializeActiveObjs();
+			updateUsername(loginName);
+			$("#logodiv").show();
+			setLangOptions("select[name='langs']");
+			setTabs();
+			setPrjAndNotePageInit();
+			if (!isAdminUser()) {
+				$("#admin_link").attr("href", "javascript:void(0);");
+				$("#admin_link").attr("onclick", "return false;");
+				$("#admin_menu").hide();
+			}
+			setPrefsWindow();
+			setCompleteProject();
+		});
+
+	</script>
+	<script type="text/javascript" src="admin/js/prjAndNote.js"></script>
+	<script type="text/javascript" src="admin/js/common.js"></script>
+</head>
+
+<body>
+	<div id="refinement" class="popup"></div>
+	<div id="header">
+		<div class="right">
+			<div id="usrInfo"><span id="usmWrapper"></span></div>
+			<div id="logodiv"><a href=""><img src="./img/logo.gif" width=42 height=47 alt="CodeDepot"></a></div>
+		</div>
+		<div id="simpleSearchDiv" class="searchDiv">
+			<form id="simpleSearchLang" class="searchMenu" name="searchForm">
+				<div class="menutable">
+					<div><span class="label">検索言語</span><select name="langs" class="objlang" onchange='setLang("simpleSearch",this);'>
+						<option value="java" selected="selected">Java</option>
+						<option value="C">C/C++</option>
+						<option value="csharp">C#</option>
+						<option value="vb.net">VB.NET</option>
+						<option value="sql">SQL</option>
+						<option value="text">Text</option>
+						<option value="*">Any</option>
+					</select></div>
+					<div class="linkmenu"><span class="currentToggler">単純検索</span><a id="toggleAdvSearch" class="searchToggler" href="#advSearchDiv" onclick="toggleSearchDiv('advSearchDiv')">オプション検索</a><a id="toggleCloneSearch" class="searchToggler" href="#cloneSearchDiv" onclick="toggleSearchDiv('cloneSearchDiv')">クローン検索</a><a id="toggleNoteSearch" class="searchToggler" href="#noteSearchDiv" onclick="toggleSearchDiv('noteSearchDiv')">ノート検索</a></div>
+				</div>
+			</form>
+			<form id="simpleSearchForm" class="searchForm" name="srchForm" onsubmit='simpleSearch(); return false;'>
+				<div class="horizontal"><input id="qtext" type="text" autofocus>
+				<input type="reset" value="×"><input value="検索" type="submit"></div>
+			</form>
+		</div>
+		<div id="advSearchDiv" class="searchDiv">
+			<form id="advSearchLang" class="searchMenu">
+				<div class="menutable">
+					<div><span class="label">検索言語</span><select name="langs" class="objlang" onchange="setLang('advSearch',this);">
+						<option value="java" selected="selected">Java</option>
+						<option value="C">C/C++</option>
+						<option value="csharp">C#</option>
+						<option value="vb.net">VB.NET</option>
+						<option value="sql">SQL</option>
+						<option value="text">Text</option>
+						<option value="*">Any</option>
+					</select></div>
+					<div class="linkmenu"><a id="toggleSimpleSearch" class="searchToggler" href="#simpleSearchDiv" onclick="toggleSearchDiv('simpleSearchDiv')">単純検索</a><span class="currentToggler">オプション検索</span><a id="toggleCloneSearch" class="searchToggler" href="#cloneSearchDiv" onclick="toggleSearchDiv('cloneSearchDiv')">クローン検索</a><a id="toggleNoteSearch" class="searchToggler" href="#noteSearchDiv" onclick="toggleSearchDiv('noteSearchDiv')"> ノート検索</a></div>
+				</div>
+			</form>
+			<form id="advSearchForm" class="searchForm" onsubmit='advSearch(); return false;'>
+				<div class="horizontal"><input id="advqtext" type="hidden"><input id="advqinfo" type="text" readonly="readonly"><input type="reset" onclick="resetAdvForm();" value="×"><input value="検索" type="submit"></div>
+				<div class="horizontal" style="align-items: flex-start">
+					<img id="foldup" class="pointer" src="./img/arrow-down.png" align="left" title="折畳む" alt="▼" onClick="showInputArea(); return false;">
+					<div class="vertical">
+						<div id="showInput" class="horizontal">
+							<div id="unit" class="horizontal"><span class="label">検索単位</span><div class="unitbox" id="JavaUnit"><input id="javafile" type="radio" name="unit" value="file" checked="checked" onclick="setUnit('file');"><label>ファイル</label><input type="radio" name="unit" value="class" onclick="setUnit('class');"><label>クラス</label><input type="radio" name="unit" value="method" onclick="setUnit('method');"><label>メソッド</label></div><div class="unitbox" id="CCUnit"><input id="cfile" type="radio" name="cunit" value="file" checked="checked" onclick="setUnit('file');"><label>ファイル</label><input type="radio" name="cunit" value="m*" onclick="setUnit('m*');">関数<input id="ctype" type="radio" name="cunit" value="t*" onclick="setUnit('t*');">構造体</div></div>
+						</div>
+						<div id="syntax" class="horizontal">
+							<div id='terms'>
+								<div id='clause1' class="clause default"><label class="label">検索条件</label><select name='fieldName' class="field" onchange='setFieldName(this);'>
+									<option value="any" selected="selected">すべて</option>
+									<option value="code">コード</option>
+									<option value="comment">コメント</option>
+									<option value="class name">クラス名</option>
+									<option value="function name">関数名</option>
+									<option value="function call">関数呼出し</option></select><input type='text' name='fieldTerms' class="term" onBlur='setFieldTerms(this)'></div>
+								<div id="clause2" class="clause default"><select name='logicop' class='andor' onChange='setLogicOp(this)'>
+									<option value="AND" selected="selected">AND</option>
+									<option value="OR">OR</option></select><select name='fieldName' class="field" onChange='setFieldName(this);'>
+									<option value="any" >すべて</option>
+									<option value="code">コード</option>
+									<option value="comment">コメント</option>
+									<option value="class name" selected="selected">クラス名</option>
+									<option value="function name">関数名</option>
+									<option value="function call">関数呼出し</option></select><input id='navigation' type='text' name='fieldTerms' class="term" onblur='setFieldTerms(this)'><img class="plusmbt" src="./img/add.png" alt="Search more" title="追加" onclick="addSearchOption()"><img class="plusmbt" src="./img/minus.png" alt="-" title="削除" onclick="delSearchOption()"></div>
+							</div>
+							<div id="sigSection" style="display: none">
+								<div id="clause8" class="clause intype"><select name="logicop" class="andor" onchange="setLogicOp(this)">
+									<option value="AND" selected="selected">AND</option>
+									<option value="OR">OR</option>
+								</select><span>関数引数型</span><input id="parameterType" type='text' name='fieldTerms' class='term' onblur='setFieldTerms(this)'><select style="display: none" name='fieldName' class="field" onchange="setFieldName(this);">
+									<option value="parameter type" selected="selected">parameter type</option>
+									<option value="return type">return type</option>
+								</select></div>
+								<div id="clause9" class="clause outtype"><select style="display: inline" name="logicop" class="andor" onchange="setLogicOp(this)">
+									<option value="AND" selected="selected">AND</option>
+									<option value="OR">OR</option>
+								</select><span>戻り値型</span><input id="returnType" type='text' name='fieldTerms' class='term' onblur='setFieldTerms(this)'><select style="display: none" name='fieldName' class="field" onchange="setFieldName(this);">
+									<option value="return type" selected="selected">return type</option>
+									<option value="parameter type">parameter type</option>
+								</select></div>
+							</div>
+						</div>
+						<div id="scope" class="horizontal"><span>プロジェクト</span><input type="text" id="optprj" name="prj" onblur="setFilterByInput(this)"><div id="adv_pkg"><span id="adv_label_pkg">パッケージ</span><span id="adv_label_cns" style="display:none">名前空間</span><input type="text" id="pkg" name="pkg" onblur="setFilterByInput(this)"></div><span>ファイル</span><input type="text" id="file" name="file" onblur="setFilterByInput(this)"><span>ライセンス</span><input type="text" class="license" id="license" name="license" onblur="setFilterByInput(this)"></div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div id="cloneSearchDiv" style="display: none" class="searchDiv">
+			<form id="cloneSearchLang" class="searchMenu">
+				<div class="menutable">
+					<div><span class="label">検索言語</span><select name="langs" class="objlang" onchange='setLang("cloneSearch",this);'>
+						<option value="java">Java</option>
+						<option value="C">C/C++</option>
+						<option value="csharp">C#</option>
+						<option value="vb.net">VB.NET</option>
+						<option value="sql">SQL</option>
+					</select></div>
+					<div class="linkmenu"><a id="toggleSimpleSearch" class="searchToggler" href="#simpleSearchDiv" onclick="toggleSearchDiv('simpleSearchDiv')">単純検索</a><a id="toggleAdvSearch" class="searchToggler" href="#advSearchDiv" onclick="toggleSearchDiv('advSearchDiv')">オプション検索</a><span class="currentToggler">クローン検索</span><a id="toggleNoteSearch" class="searchToggler" href="#noteSearchDiv" onclick="toggleSearchDiv('noteSearchDiv')">ノート検索</a></div>
+				</div>
+			</form>
+			<form id="cloneSearchForm" class="searchForm" onsubmit="cloneSearch('cqtext'); return false;">
+				<input type="hidden" name=qt value="clone">
+				<div class="horizontal">
+					<textarea id="cqtext" rows="7" class="clonearea" wrap="off" name=q></textarea><input type="reset" value="×"><input value="検索" type="submit">
+				</div>
+				<div class="horizontal">
+					<div class="horizontal" id="fazzy_option"><label class="label">厳密度</label><input type="radio" name="slop" value="0" checked><label>高</label><input type="radio" name="slop" value="1"><label>中</label><input type="radio" name="slop" value="2"><label>低</label></div>
+					<div class="horizontal" id="filter_option"><label>プロジェクト</label><input type="text" maxlength="80" id="cloneprj" name="prj" class="element inputTitle" onchange="setCloneFilter(this)"><div id="clone_pkgfilter"><label>パッケージ</label><input type="text" id="clonepkg" name="pkg" onchange="setCloneFilter(this)"></div><div id="clone_filefilter" style="display:none"><label>ファイル</label><input type="text" id="clonefile" name="file" onchange="setCloneFilter(this)"></div><label>コード</label><input type="text" maxlength="80" id="clonecode" name="code" class="element inputTitle" onchange="setCloneFilter(this)"></div>
+				</div>
+			</form>
+		</div>
+		<div id="noteSearchDiv" class="searchDiv">
+			<form id="noteSearchKind" class="searchMenu">
+				<div class="menutable">
+					<div><span class="label">検索範囲</span><select name="kind" class="objlang">
+						<option selected="selected" value="public">公開ノート</option>
+						<option value="private">個人ノート</option>
+					</select></div>
+					<div class="linkmenu"><a id="toggleSearch" class="searchToggler" href="#simpleSearchDiv" onclick="toggleSearchDiv('simpleSearchDiv')">単純検索</a><a id="toggleAdvSearch" class="searchToggler" href="#advSearchDiv" onclick="toggleSearchDiv('advSearchDiv')">オプション検索</a><a	id="toggleCloneSearch" class="searchToggler" href="#cloneSearchDiv" 			onclick="toggleSearchDiv('cloneSearchDiv')">クローン検索</a><span class="currentToggler">ノート検索</span></div>
+				</div>
+			</form>
+			<form id="noteSearchForm" class="searchForm" onsubmit='noteSearch(); return false;'>
+				<div class="horizontal"><input id="qnote" type="text"><input type="reset" value="×"><input value="検索" type="submit"></div>
+				<div id="scope" class="horizontal"><span>プロジェクト</span><input type="text" id="noteprj" name="prj" onblur="setFilterByInput(this)"><span>ファイル</span><input type="text" id="notefile" name="file" onblur="setFilterByInput(this)"></div>
+			</form>
+		</div>
+	</div>
+
+	<div id="main">
+		<div class="container" id="contentContainer">
+			<div id="codeTabs" class="tabWrapper">
+				<ul id="codeTabList">
+					<li><a id="resultsT" href="#resultsC">Results</a></li>
+				</ul>
+				<div id="resultsC" class="tabContent">
+					<div class="bar"></div>
+					<div class="helpcontent">
+						<h2>検索方法</h2>
+						<h3>単純検索</h3>
+						<p class="infolink">ワードやフレーズを入力して検索を行います。<br>フィールドを指定した検索や組み合わせ検索もできます。<a href="javascript:showHelpInfo('simpleSearchDiv');">詳細</a></p>
+						<h3>オプション検索検索</h3>
+						<p class="infolink">検索単位や検索条件を細かに指定して検索を行います。
+							<A href="javascript:showHelpInfo('advSearchDiv');">詳細</A>
+						</p>
+						<h3>クローン検索検索</h3>
+						<p class="infolink">コードの断片に構造が類似するコードを検索します。
+							<A href="javascript:showHelpInfo('cloneSearchDiv');">詳細</A>
+						</p>
+						<h2>検索結果</h2>
+						<p class="infolink">パッケージを選択すると絞り込み画面を表示します。</p>
+						<p class="infolink">ファイル名を選択するとファイルをダウンロードします。</p>
+						<p class="infolink">プロジェクト名を選択するとプロジェクトの情報を表示します。</p>
+						<h2>ファイル内容表示</h2>
+						<p class="infolink">ファイル内容を見ながらノートを記入できます。</p>
+						<h2>メニュー</h2>
+						<p class="infolink"><a id="prjlist_link" href="javascript:showProjectList();">プロジェクト一覧</a>、<a id="prefs_link" href="javascript:showPrefsWindow();">個人設定</a>、<a id="admin_link" title="管理者のみ有効" href="javascript:showAdminWindow();">システム管理</a>、<a id="help_link" href="javascript:showHelpWindow();">マニュアル</a>を表示します。</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container" id="infoContainer">
+			<div id="infoTabs" class="tabWrapper">
+				<ul id="infoTabList" class="tabList">
+					<li><a id="prjT" href="#prjC"><span>プロジェクト</span></a></li>
+					<li><a id="noteT" href="#noteC"><span>ノート</span></a></li>
+					<li><a href="#note0"><span>#1</span></a></li>
+					<li><a href="#note1"><span>#2</span></a></li>
+					<li><a href="#note2"><span>#3</span></a></li>
+					<li style="float: right;"><a id="helpT" href="#helpC"><span	class="ui-icon ui-icon-info" title="ヘルプ"></span></a></li>
+				</ul>
+				<div id="helpC" class="tabContent">&nbsp;</div>
+				<div id="prjC" class="tabContent">
+					<div class="errmsg">
+						<div id="errorMsg"></div>
+					</div>
+					<table class="table-tab-nav">
+						<tr>
+							<td id="prjInfoTb" colspan="11" class="pj-info-table">
+								<table class="table-tab-content">
+									<tr>
+										<td colspan="3"><span id="projectName"></span></td>
+									</tr>
+									<tr>
+										<td class="site-url-img"><img id="site-img" src="admin/images/61.png" height="16"></td>
+										<td class="site-url-lable"><span class='nobr notelink'><a id="siteUrl" class="site-url" target="_blank">ホームページ</a></span></td>
+										<td class="site-blank"></td>
+									</tr>
+									<tr>
+										<td class="dw-url-img"><img id="dw-img" src="admin/images/45.png" height="16"></td>
+										<td class="dw-url-lable"><span class='nobr notelink'><a	id="dwUrl" target="_blank">ダウンロード</a></span></td>
+										<td class="site-blank"></td>
+									</tr>
+									<tr>
+										<td colspan="3">概要
+											<div><textarea id="projectDescription" name="element_17" class="element textarea_readOnly medium_pj" readonly="readonly"></textarea></div>
+										</td>
+									</tr>
+									<tr>
+										<td class="nobr license-lable">ライセンス</td>
+										<td colspan="2" class="license-text"><input id="projectLicense" type="text" class="element text_readOnly medium" id="element_16" value="" size="25" maxlength="255" readonly="readonly" /></td>
+									</tr>
+									<tr>
+										<td class="nobr">アクセス制御</td>
+										<td colspan="2" class="license-text"><input id="projectRestricted" type="text" class="element text_readOnly medium" id="element_48" size="25" maxlength="255" readonly="readonly"></td>
+									</tr>
+									<tr>
+										<td class="nobr">除外ファイル</td>
+										<td colspan="2" class="license-text"><input id="projectIgnores" type="text" class="element text_readOnly medium" id="element_48" size="25" maxlength="255" readonly="readonly"></td>
+									</tr>
+									<tr>
+										<td colspan="3">検索対象</td>
+									</tr>
+									<tr>
+										<td id="tabcontent1" colspan="3" align="center" class="table-tab-content">
+											<table class="table-search-result" id="listTable"></table>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3">ノート</td>
+									</tr>
+									<tr>
+										<td id="tabcontent2" colspan="3" align="center" class="table-tab-content">
+											<table class="table-search-result">
+												<tr>
+													<td width='40%' class='td-head'>個人ノート</td>
+													<td class='td-normal'>
+														<div id="private_notes" align="right">0</div>
+													</td>
+													<td width='18%' class='td-normal'>
+														<div align="center"><a id="private_notes_link" href="#">参照</a></div>
+													</td>
+												</tr>
+												<tr>
+													<td width='40%' class='td-head'>公開ノート</td>
+													<td class='td-normal'>
+														<div id="public_notes" align="right">0</div>
+													</td>
+													<td width='18%' class='td-normal'>
+														<div align="center"><a id="public_notes_link" href="#">参照</a></div>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="noteC" class="tabContent">
+					<div class="errmsg">
+						<div id="permitMsg"></div>
+					</div>
+					<table id="noteTitleTab" class="noteTitlePadding">
+						<tr>
+							<td class="rightpadding"></td>
+							<td class="leftAlign" colspan="2"><span id="sourceName"></span></td>
+							<td class="rightAlign"><div class='nobr notelink rightAlign'><a href="javascript:addNoteInfo();" id="createNotehref">新規ノート </a></div></td>
+						</tr>
+						<tr>
+							<td class="rightpadding"></td>
+							<td><input type="hidden" id="hiddenfileID" name="hiddenfileID"><input type="hidden" id="hiddenprjName" name="hiddenprjName"><input type="hidden" id="hiddenpath" name="hiddenpath"></td>
+						</tr>
+					</table>
+					<div class="noteScroll">
+						<div id="notelist" class="noteDetailPadding"></div>
+					</div>
+					<div class="noteCountInfo">
+						<table id="noteMainInfo" class="table-tab-content">
+							<tr>
+								<td colspan="2" class="td-note-sum-total noteTitlePadding">
+									<div id="noteRecordCount"></div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" class="td-note-sum-detailbtn noteTitlePadding"><div class='notelink'><a id="noteShowHref" href="#" onclick="javascript:showNoteList();">ノート表示</a></div></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div id="note0">
+					<table class="table-tab-content">
+						<tr>
+							<td class="td-tab-content bar"><span id="sourceNameChild0"></span><input type="hidden" id="childnodeID0"><input type="hidden" id="childPrjName0"><input type="hidden" id="childPath0"><input type="hidden" id="childfileID0"></td>
+						</tr>
+						<tr>
+							<td><label>ノートを付ける行番号を入力して下さい。</label></td>
+						</tr>
+						<tr>
+							<td><input name="txtFrom0" type="text" id="txtFrom0" maxlength="10">から<input name="txtTo0" type="text" id="txtTo0" maxlength="10">まで</td>
+						</tr>
+					</table>
+					<textarea id="txtcontents0" name="txtcontents0" class="element textarea medium"></textarea>
+					<table class="table-tab-content">
+						<tr>
+							<td class="td-tab-content"><label class='vmiddle'><input type="checkbox" name="checkbox0" id="checkbox0" checked="checked" >ノートを公開</label></td>
+						</tr>
+						<tr>
+							<td class="td-tab-content">
+								<div id="noteMsg0" class="wrongfont"></div>
+							</td>
+						</tr>
+						<tr>
+							<td class="td-tab-content"><input type="button" class="BTN noteBtn" value="登録" onclick="javascript:submitTabInfo(0)"><input type="button" class="BTN noteBtn" value="中止" onclick="javascript:closeBtnHandler(0)"><input type="button" class="BTN noteBtn" value="リセット" onclick="javascript:resetBtnHanlder(0)"></td>
+						</tr>
+					</table>
+				</div>
+				<div id="note1">
+					<table class="table-tab-content">
+						<tr>
+							<td class="td-tab-content"><span id="sourceNameChild1"></span><input type="hidden" id="childnodeID1"><input type="hidden" id="childPrjName1"><input type="hidden" id="childPath1"><input type="hidden" id="childfileID1"></td>
+						</tr>
+						<tr>
+							<td><label>ノートを付ける行番号を入力して下さい。</label></td>
+						</tr>
+						<tr>
+							<td><input name="txtFrom1" type="text" id="txtFrom1" maxlength="10">から<input name="txtTo1" type="text" id="txtTo1" maxlength="10">まで</td>
+						</tr>
+					</table>
+					<textarea id="txtcontents1" name="txtcontents1" class="element textarea medium"></textarea>
+					<table class="table-tab-content">
+						<tr>
+							<td class="td-tab-content"><label class='vmiddle'><input type="checkbox" name="checkbox1" id="checkbox1" checked="checked" >ノートを公開</label></td>
+						</tr>
+						<tr>
+							<td class="td-tab-content">
+								<div id="noteMsg1" class="wrongfont"></div>
+							</td>
+						</tr>
+						<tr>
+							<td class="td-tab-content"><input type="button" class="BTN noteBtn" value="登録" onclick="javascript:submitTabInfo(1)" /><input type="button" class="BTN noteBtn" value="中止" onclick="javascript:closeBtnHandler(1)"><input type="button" class="BTN noteBtn" value="リセット" onclick="javascript:resetBtnHanlder(1)"></td>
+						</tr>
+					</table>
+				</div>
+				<div id="note2">
+					<table class="table-tab-content">
+						<tr>
+							<td class="td-tab-content"><span id="sourceNameChild2"></span><input type="hidden" id="childnodeID2"><input type="hidden" id="childPrjName2"><input type="hidden" id="childPath2" /><input type="hidden" id="childfileID2"></td>
+						</tr>
+						<tr>
+							<td><label>ノートを付ける行番号を入力して下さい。</label></td>
+						</tr>
+						<tr>
+							<td><input name="txtFrom2" type="text" id="txtFrom2" maxlength="10">から<input name="txtTo2" type="text" id="txtTo2" maxlength="10">まで</td>
+						</tr>
+					</table>
+					<textarea id="txtcontents2" name="txtcontents2" class="element textarea medium "></textarea>
+					<table class="table-tab-content">
+						<tr>
+							<td class="td-tab-content"><label class='vmiddle'><input type="checkbox" name="checkbox2" id="checkbox2" checked="checked" >ノートを公開</label></td>
+						</tr>
+						<tr>
+							<td class="td-tab-content">
+								<div align="left" id="noteMsg2" class="wrongfont"></div>
+							</td>
+						</tr>
+						<tr>
+							<td class="td-tab-content"><input type="button" class="BTN noteBtn" value="登録" onclick="javascript:submitTabInfo(2)"><input type="button" class="BTN noteBtn" value="中止" onclick="javascript:closeBtnHandler(2)"><input type="button" class="BTN noteBtn" value="リセット" onclick="javascript:resetBtnHanlder(2);"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="dialog"></div>
+</body>
+</html>

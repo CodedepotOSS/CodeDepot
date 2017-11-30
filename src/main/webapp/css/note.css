@@ -1,0 +1,245 @@
+/*
+ Copyright (c) 2009 SRA (Software Research Associates, Inc.)
+
+ This file is part of CodeDepot.
+ CodeDepot is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.0
+ as published by the Free Software Foundation and appearing in
+ the file GPL.txt included in the packaging of this file.
+
+ CodeDepot is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CodeDepot. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* css settings for note */
+.thread {
+	background-color: #EFEFEF;
+	margin-bottom: 2px;
+	border-bottom: solid 1px #EADEBF;
+	border-top: solid 1px #EADEBF;
+	border-left: solid 5px #EADEBF;
+	border-right: solid 5px #EADEBF;
+}
+
+.activeThread {
+	border-bottom: solid 1px;
+    border-top: solid 1px;
+    border-left: solid 5px;
+    border-right: solid 5px;
+    border-color: yellow;
+	background-color: #bbeeee;
+}
+
+.subject {
+	font-weight: bold;
+}
+
+#username,.date {
+	color: #888;
+}
+
+td.date {
+	width: 50%;
+}
+
+td.folded {
+	width: 10%;
+	text-align: right;
+}
+
+td.username {
+	width: 50%;
+}
+
+.notesWrapper .date {
+	float: right;
+	margin-top: -1.2em;
+}
+
+.noteForm {
+	width: 100%;
+	background-color: #F5F5F5;
+}
+
+.noteForm p {
+	font: gray;
+}
+
+.note {
+	border-top: dotted 2px silver;
+}
+
+.noteInput {
+	width: 100%;
+}
+
+.reply {
+	text-decoration: underline;
+	font: blue;
+}
+
+.reply:hover {
+	cursor: pointer;
+}
+
+.folded {
+	width: 1em;
+	font-family: monospace;
+}
+
+.lineSpan {
+	width: 7em;
+}
+
+.count {
+	width: 2em;
+}
+
+.folded:hover {
+	background: yellow;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.tabContent button {
+	width: 100%;
+}
+
+/* adding notes */
+.toBeNotedClass {
+	background-color: #fff68f; /* khaki1 */
+}
+
+.lnSummary {
+	display: none;
+	position: absolute;
+}
+
+.ui-widget textarea {
+    font-size: 12px;
+    padding: 4px;
+    line-height: 12px;
+	width: 100%;
+	height: 5em;
+}
+
+.table-tab-nav{
+    font-size: 12px;
+    line-height: 16px;
+    box-sizing: border-box;
+	border:none;
+	text-align:center;
+	border-collapse:collapse;
+	width: calc(100% - 2em);
+	margin: 1em;
+}
+.pj-info-table{
+	border:0;
+	text-align:left;
+	padding-top:1px;
+	border-collapse:collapse;
+	width:100%;
+	display:none;
+    margin: 5px 0;
+    box-sizing: border-box;
+}
+
+.noteListTable {
+	width: 100%;
+	padding: 1em;
+}
+.noteListTable > .table-tab-content {
+	width: 100%;
+	border-spacing: 0;
+}
+.noteListTable label {
+	width: 100%;
+}
+.noteListTable label textarea {
+	width: 100%;
+}
+
+.noteListTable .table-tab-content:first-child > tbody > tr > td {
+	background: #fbed81;
+}
+.notelink {
+	display: inline-block;
+	padding: 0.1em;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.table-tab-content > tbody > tr > td:first-child {
+	text-align: right;
+}
+.table-tab-content > tbody > tr > td:first-child .notelink {
+	min-width: 8em;
+}
+.table-tab-content > tbody > tr > td:last-child {
+	text-align: left;
+	width: 100%;
+}
+
+.table-search-result{
+	border-left:1px solid #A2A2A2;
+	border-bottom:1px solid #A2A2A2;
+	text-align:center;
+	border-collapse:collapse;
+	width: 100%;
+}
+.table-search-result th {
+	color: #333333;
+	font-family: Helvetica, Verdana,Arial,sans-serif, Tahoma,"ＭＳ ゴシック";
+	font-size: 12px;
+	text-align:center;
+	font-weight:normal;
+	border:1px solid #A2A2A2;
+	white-space:nowrap;
+	height:25px;
+}
+.table-search-result td {
+	color: #333333;
+	font-family: Helvetica, Verdana,Arial,sans-serif, Tahoma,"ＭＳ ゴシック";
+	font-size: 12px;
+	text-align:left;
+	font-weight:normal;
+	border-right:1px solid #A2A2A2;
+	border-top:1px solid #A2A2A2;
+	white-space:nowrap;
+	height:20px;
+    padding: 0 2px;
+}
+.table-search-result td.td-search-result-title-left {
+    font-size: 14px;
+	letter-spacing: 1px;
+	word-spacing: 1px;
+	color: #0066CC;
+	font-weight: bold;
+	background-color: #FFFFCC;
+	background-position: 10px;
+	text-indent: 10px;
+	text-align:left;
+	border-right:0px solid #A2A2A2;
+}
+.table-search-result td.td-search-result-title-right {
+    font-size: 14px;
+	letter-spacing: 1px;
+	word-spacing: 1px;
+	color: #0066CC;
+	font-weight: bold;
+	background-color: #FFFFCC;
+	background-position: 10px;
+	text-indent: 10px;
+	text-align:right;
+}
+
+#infoTabs li.ui-state-default.ui-corner-top:last-child,
+#infoTabs li.ui-corner-top.ui-tabs-selected.ui-state-active:last-child {
+	margin: 0;
+	background: none;
+}

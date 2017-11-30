@@ -1,0 +1,17 @@
+<html>
+<head><title>CodeDepot</title>
+<link rel="stylesheet" type="text/css" href="css/${locale}.css">
+<script type="text/javascript" src="js/lib/strings_${locale}.js"></script>
+</head>
+
+
+<body>
+<h2>${menu}</h2>
+<p class="infolink">
+<a id="prjlist_link" href="javascript:showProjectList();">${showPrjList}</a>
+<a id="prefs_link" href="javascript:showPrefsWindow();">${personalSetup}</a>
+<a id="admin_link" title="${mgrOnly}" href="javascript:showAdminWindow();">${mgrInterface}</a>
+${showManual}</p>
+</body>
+</html>
+

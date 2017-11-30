@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2009 SRA (Software Research Associates, Inc.)
+
+ This file is part of CodeDepot.
+ CodeDepot is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.0
+ as published by the Free Software Foundation and appearing in
+ the file GPL.txt included in the packaging of this file.
+
+ CodeDepot is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CodeDepot. If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE sqlMap
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="note">
+	<typeAlias alias="noteBean" type="jp.co.sra.codedepot.admin.db.entity.NoteEntity" />
+	<typeAlias alias="fileBean" type="jp.co.sra.codedepot.admin.db.entity.FileEntity" />
+	<!-- ファイルレIDを取得する -->
+	<select id="getFileID" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+			SELECT
+		 		id
+			FROM
+				file
+			WHERE
+				project = #project#
+			AND
+				path = #path#
+ 	</select>
+
+ 	<!-- ノート情報レコード数を取得する  -->
+ 	<select id="getNoteInfoCount" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+			SELECT
+		 		COUNT(1)
+			FROM
+				note
+			WHERE
+				fid = #fileID#
+			AND
+				(
+					  	public = true
+					OR
+						cuserid = #loginID#
+				)
+			AND
+				del_flag = false
+ 	</select>
+
+ 	<!-- ノート一覧画面情報を取得する -->
+ 	<select id="getNoteInfoList" parameterClass="java.util.Map" resultClass="noteBean">
+		<![CDATA[
+			(	SELECT
+		 			n.id
+		 		   ,n.fid
+		 		   ,n.linefrom
+		 		   ,n.lineto
+		 		   ,n.contents
+		 		   ,n.cuserid
+		 		   ,to_char(n.mtime,'yyyy/MM/dd HH24:MI') as mtime
+		 		   ,m.username
+		 		   ,m.email
+				FROM
+					note n
+				LEFT JOIN
+			    	member m
+				ON  (n.muserid = m.id)
+				WHERE
+					n.del_flag = false
+				AND
+					fid = #fileID#
+				AND
+					(
+					  	n.public = true
+						OR
+						n.cuserid = #loginID#
+					)
+				AND
+					n.linefrom = -1
+				AND
+					n.lineto = -1
+				ORDER BY
+					n.mtime DESC
+				)
+	UNION ALL
+			(
+				SELECT
+		 			n.id
+		 		   ,n.fid
+		 		   ,n.linefrom
+		 		   ,n.lineto
+		 		   ,n.contents
+		 		   ,n.cuserid
+		 		   ,to_char(n.mtime,'yyyy/MM/dd HH24:MI') as mtime
+		 		   ,m.username
+		 		   ,m.email
+				FROM
+					note n
+				LEFT JOIN
+				    member m
+				ON  (n.muserid = m.id)
+				WHERE
+					n.del_flag = false
+				AND
+					fid = #fileID#
+				AND
+					(
+						  	n.public = true
+						OR
+							n.cuserid = #loginID#
+					)
+				AND
+					(
+						n.linefrom <> -1
+						OR
+						n.lineto <> -1
+					)
+				ORDER BY
+						n.linefrom
+				       ,n.mtime DESC
+			   )
+		]]>
+  </select>
+
+ 	<!-- ノート情報を削除する -->
+ 	<delete id="deleteNoteInfo" parameterClass="java.lang.Integer">
+	    UPDATE
+	    	note
+	    SET
+	    	del_flag = true
+      	WHERE
+      		id  = #id#
+      	AND
+      		del_flag = false
+  	</delete>
+
+  	<!-- ノート情報を取得する -->
+   <select id="getNoteInfo" parameterClass="java.lang.Integer" resultClass="noteBean">
+			SELECT
+					id
+		 		   ,linefrom
+		 		   ,lineto
+		 		   ,contents
+		 		   ,public as publicFlag
+			FROM
+				note
+			WHERE
+				id = #noteID#
+			AND
+				del_flag = false
+ 	</select>
+
+ 	<select id="getSourceLines" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+			SELECT
+		 		lines
+			FROM
+				source
+			WHERE
+				project = #project#
+			AND
+				path = #path#
+ 	</select>
+
+ 	<!-- ノート情報を新規する -->
+ 	<insert id="insertNoteInfo" parameterClass="noteBean">
+			INSERT INTO
+		    	note
+		 		(
+		 			 fid
+		 			,linefrom
+		 			,lineto
+		 			,contents
+		 			,public
+		 			,cuserid
+		 			,ctime
+		 			,muserid
+      	   			,mtime
+		 		)
+		 	VALUES
+		 		(
+		 			 #fid#
+		 			,#linefrom#
+		 			,#lineto#
+		 			,#contents#
+		 			,#publicFlag#
+		 			,#cuserid#
+		 			,now()
+		 			,#muserid#
+		 			,now()
+		 		)
+
+		<selectKey resultClass="int" keyProperty="id" >
+   					SELECT CURRVAL('note_id_seq') as id
+  		</selectKey>
+ 	</insert>
+
+    <!-- ノート情報を変更する -->
+ 	<update id="updateNoteInfo" parameterClass="noteBean">
+    		UPDATE
+    			note
+    		SET
+      			 	 linefrom=#linefrom#
+      	   			,lineto=#lineto#
+      	   			,contents=#contents#
+      	   			,public=#publicFlag#
+      	   			,muserid=#muserid#
+      	   			,mtime=now()
+	  		WHERE
+  					 id=#id#
+  			AND
+  					 del_flag=false
+ 	</update>
+
+ 	<!-- ファイル情報を新規する  -->
+ 	<insert id="insertFileInfo" parameterClass="fileBean">
+			INSERT INTO
+		    	file
+		 		(
+		 			 path
+		 			,project
+		 		)
+		 	VALUES
+		 		(
+		 			 #path#
+		 			,#project#
+		 		)
+
+		 <selectKey resultClass="int" keyProperty="id" >
+   					SELECT CURRVAL('file_id_seq') as id
+  		</selectKey>
+ 	</insert>
+
+ 	<!-- ファイル情報を新規する  -->
+ 	<select id="getPermitAccessCheckFlag" parameterClass="java.lang.String" resultClass="java.lang.String">
+ 			SELECT
+ 				restricted
+ 			FROM
+ 				project
+ 			WHERE
+ 				name = #pid#
+ 			AND
+ 				del_flag = false
+
+ 	</select>
+
+	<select id="countPersonal" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+ 			SELECT
+				COUNT(1)
+			FROM
+				note AS n,
+				file AS f,
+				member AS m
+			WHERE
+				n.fid = f.id
+			AND
+				n.del_flag = false
+			AND
+				n.muserid = #uid#
+			AND
+				n.cuserid = m.id
+			<isPropertyAvailable prepend="AND" property="pid">
+                                f.project = #pid#
+			</isPropertyAvailable>
+	</select>
+
+	<select id="countPublic" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+ 			SELECT
+				COUNT(1)
+			FROM
+				note AS n,
+				file AS f,
+				member AS m
+			WHERE
+				n.fid = f.id
+			AND
+				n.del_flag = false
+			AND
+				n.public = true
+			AND
+				n.cuserid = m.id
+			<isPropertyAvailable prepend="AND" property="pid">
+                                f.project = #pid#
+			</isPropertyAvailable>
+	</select>
+
+	<select id="selectPersonal" parameterClass="java.util.Map" resultClass="noteBean">
+		SELECT
+		 	n.id,
+		 	n.fid,
+			n.linefrom,
+		    	n.lineto,
+			n.contents,
+			n.cuserid,
+			to_char(n.mtime,'yyyy/MM/dd HH24:MI') as mtime,
+		 	m.username,
+		 	m.email,
+			f.project as pid,
+			f.path
+		FROM
+			file AS f,
+			note AS n,
+			member AS m
+		WHERE
+			f.id = n.fid
+		AND
+			n.del_flag = false
+		AND
+			n.cuserid = #uid#
+		AND
+			n.cuserid = m.id
+		<isPropertyAvailable prepend="AND" property="pid">
+                        f.project = #pid#
+		</isPropertyAvailable>
+		ORDER BY
+			n.mtime DESC
+	</select>
+
+	<select id="selectPublic" parameterClass="java.util.Map" resultClass="noteBean">
+		SELECT
+		 	n.id,
+		 	n.fid,
+			n.linefrom,
+		    	n.lineto,
+			n.contents,
+			n.cuserid,
+			to_char(n.mtime,'yyyy/MM/dd HH24:MI') as mtime,
+		 	m.username,
+		 	m.email,
+			f.project as pid,
+			f.path
+		FROM
+			file AS f,
+			note AS n,
+			member AS m
+		WHERE
+			f.id = n.fid
+		AND
+			n.public = true
+		AND
+			n.del_flag = false
+		AND
+			n.cuserid = m.id
+		<isPropertyAvailable prepend="AND" property="pid">
+                        f.project = #pid#
+		</isPropertyAvailable>
+		ORDER BY
+			n.mtime DESC
+	</select>
+
+	<select id="searchNote" parameterClass="java.util.Map" resultClass="noteBean">
+		SELECT
+		 	n.id,
+		 	n.fid,
+			n.linefrom,
+		    	n.lineto,
+			n.contents,
+			n.cuserid,
+			to_char(n.mtime,'yyyy/MM/dd HH24:MI') as mtime,
+		 	m.username,
+		 	m.email,
+			p.title as project,
+			f.project as pid,
+			f.path
+		FROM
+			file AS f,
+			note AS n,
+			member AS m,
+			project AS p
+		WHERE
+			f.id = n.fid
+		AND
+			(
+			  	n.public = true
+				OR
+				n.cuserid = #loginID#
+			)
+		AND
+			( p.restricted = false
+                      	  OR
+			  p.name IN (
+				SELECT
+					pj.name
+				FROM
+					permit pe,
+					project pj
+                               	WHERE
+					pe.project = pj.name
+				AND
+					pe.mid = #loginID#
+				)
+                        )
+		AND
+			n.del_flag = false
+		AND
+			p.del_flag = false
+		AND
+			n.cuserid = m.id
+		AND
+			p.name = f.project
+		<isPropertyAvailable prepend="AND" property="project">
+                        p.title like '%'||#project#||'%'
+		</isPropertyAvailable>
+		<isPropertyAvailable prepend="AND" property="file">
+                        f.path like '%'||#file#||'%'
+		</isPropertyAvailable>
+		<isPropertyAvailable prepend="AND" property="content">
+                        n.contents like '%'||#content#||'%'
+		</isPropertyAvailable>
+		<isPropertyAvailable prepend="AND" property="uid">
+			n.muserid = #uid#
+		</isPropertyAvailable>
+		<isPropertyAvailable prepend="AND" property="public">
+			n.public = true
+		</isPropertyAvailable>
+		ORDER BY
+			n.mtime DESC
+	</select>
+</sqlMap>

@@ -1,0 +1,638 @@
+<HTML>
+<!--
+ Copyright (c) 2009 SRA (Software Research Associates, Inc.)
+
+ This file is part of CodeDepot.
+ CodeDepot is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.0
+ as published by the Free Software Foundation and appearing in
+ the file GPL.txt included in the packaging of this file.
+
+ CodeDepot is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CodeDepot. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<HEAD>
+	<TITLE>ユーザガイド - CodeDepot</TITLE>
+	<META http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="css/help.css">
+</HEAD>
+
+<BODY>
+	<DIV class="main_menu">
+		<a class="item" HREF="index.html">ユーザガイド</a>
+		<a class="item" HREF="search.html">検索文法</a>
+		<span class="item">管理者ガイド</span>
+	</DIV>
+	<DIV id="admin" class="container">
+		<DIV class="sub_menu">
+			<A class="item" HREF="#admin_main"><SPAN>システム管理</SPAN></A>
+			<A class="item" HREF="#admin_account"><SPAN>アカウント管理</SPAN></A>
+			<A class="item" HREF="#admin_project"><SPAN>プロジェクト管理</SPAN></A>
+			<A class="item" HREF="#admin_logging"><SPAN>ログ表示</SPAN></A>
+			<A class="item" HREF="#admin_scm"><SPAN>バージョン管理連携</SPAN></A>
+			<A class="item" HREF="#admin_auth"><SPAN>認証連携</SPAN></A>
+			<A class="item" HREF="#admin_ssl"><SPAN>SSL 連携</SPAN></A>
+			<A class="item" HREF="#admin_logs"><SPAN>ログファイル</SPAN></A>
+		</DIV>
+		<DIV class="body">
+			<DIV id="admin_main">
+				<H2>システム管理</H2>
+				<p>システム管理者とプロジェクト管理者は、画面右上からシステム管理を開くことができます。</p>
+				<p>システム管理では、アカウント管理、プロジェクト管理、ログ表示が行えます。</p>
+				<dl>
+					<dt>アカウント管理</dt>
+					<dd>新規アカウントの追加や、登録済みアカウントの表示や編集、削除を行います。</dd>
+					<dt>プロジェクト管理</dt>
+					<dd>新規プロジェクトの追加や、登録済みプロジェクトの表示や編集、削除を行います。</dd>
+					<dt>ログ表示</dt>
+					<dd>検索インデックスの更新処理の実行結果を表示します。</dd>
+				</dl>
+			</DIV>
+			<DIV id="admin_account">
+				<H2>アカウント管理</H2>
+				<p>Codedepot を利用するユーザのアカウントの追加や登録済みアカウントの表示や編集削除を行います。</p>
+				<H3>アカウント追加</H3>
+				<p> アカウント追加では、ユーザ毎にアカウント名、パスワード、メールアドレスを入力してください。</p>
+				<table width="90%">
+					<tr>
+						<th>フィールド名</th>
+						<th>説明</th>
+						<th>必須</th>
+					</tr>
+					<tr>
+						<td>アカウント名</td>
+						<td>ユーザ毎に固有の識別名を指定下さい。<br/>英数小文字と記号 "-", "_", "." を利用できます。</td>
+						<td class="notice">&#9711;</td>
+					</tr>
+					<tr>
+						<td>パスワード</td>
+						<td>外部認証連携を行う場合は、入力しません。<br/>データベースにハッシュ化したパスワードを保存します。</td>
+						<td>&#9651;</td>
+					</tr>
+					<tr>
+						<td>メールアドレス</td>
+						<td>メールアドレスを指定するとノートの記入者のユーザ名とともにメールアドレスを表示します。<br />
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>権限レベル</td>
+						<td>ユーザの権限を指定します。</td>
+						<td class="notice">&#9711;</td>
+					</tr>
+					<tr>
+						<td>ログイン</td>
+						<td>アカウントを無効にする場合は、「無効」を指定します。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>デフォルト検索言語</td>
+						<td>検索対象言語のデフォルトを指定します。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>管理者コメント</td>
+						<td>管理用のコメントを記入します。</td>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+				<p>権限レベルには次の権限が指定できます。</p>
+				<table width="90%">
+					<tr>
+						<th>権限レベル</th>
+						<th>説明</th>
+					</tr>
+					<tr>
+						<td>一般ユーザ</td>
+						<td>検索、ノートの記入が行えます。</td>
+					</tr>
+					<tr>
+						<td>プロジェクト管理者</td>
+						<td>検索、ノートの記入、担当するプロジェクトの設定が行えます。</td>
+					</tr>
+					<tr>
+						<td>システム管理者</td>
+						<td>検索、ノートの記入、プロジェクトの設定、システム管理が行えます。</td>
+					</tr>
+				</table>
+
+				<H3>アカウント表示</H3>
+				<p>アカウント管理では、アカウント名を指定して検索し一覧表示します。</p>
+				<p>アカウント一覧には、アカウント名をアルファベット順に表示します。</p>
+				<p>アカウント名をクリックするとアカウントの詳細を表示します。</p>
+				<p>アカウントの詳細で編集をクリックして、アカウント設定をおこなえます。</p>
+			</DIV>
+
+			<div id="admin_project">
+				<H2>プロジェクト管理</H2>
+				<p>CodeDepot は検索対象となるコードをプロジェクトごとに登録します。</p>
+				<H3>プロジェクト追加</H3>
+				<p>プロジェクト追加では、下記の情報を入力します。</p>
+				<table width="90%">
+					<tr>
+						<th>フィールド名</th>
+						<th>説明</th>
+						<th>必須</th>
+					</tr>
+					<tr>
+						<td>プロジェクト名</td>
+						<td>プロジェクトの識別名です。プロジェクト固有の識別名をします。<br/>英数文字と記号 <tt>"-", "_", "."</tt> が使用できます。<br/>指定したプロジェクト名は、コード検索する際のプロジェクト名の指定に使用します。</td>
+						<td class="notice">&#9711;</td>
+					</tr>
+					<tr>
+						<td>説明</td>
+						<td>記入した内容は、プロジェクト情報に表示されます。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>ライセンス名</td>
+						<td>プロジェクトのライセンスの識別名です。<br/>ライセンス名は、英数文字と記号 <tt>"-"</tt>, <tt>"+", "_", ".", "/"</tt>が使用できます。<br/>コード検索する際のライセンスの指定に使用します。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>ホームページのURL</td>
+						<td>プロジェクトのホームページのURLです。<br/>記入したURLがプロジェクト情報に表示されます。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>ダウンロードページのURL</td>
+						<td>プロジェクトのダウンロードページのURLです。<br/>記入したURLがプロジェクト情報に表示されます。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>プロジェクトの参照方法</td>
+						<td>プロジェクトの参照方法を指定します。</td>
+						<td class="notice">&#9711;</td>
+					</tr>
+					<tr>
+						<td>プロジェクトのパス名／URL</td>
+						<td>プロジェクトのパス名またはURLを指定します。</td>
+						<td class="notice">&#9711;</td>
+					</tr>
+					<tr>
+						<td>Subversion/CVS/Git/Jazz のユーザ名</td>
+						<td>Subversion/CVS/Git/Jazz リポジトリへの接続ユーザ名を指定します。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>Subversion/CVS/Git/Jazz のパスワード</td>
+						<td>Subversion/CVS/Jazz リポジトリへの接続パスワードを指定します。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>検索インデックスの自動更新時刻</td>
+						<td>検索インデックスの自動更新処理を起動する時刻を指定します。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>検索対象から除外するファイル</td>
+						<td>検索対象から除外するファイル名のパターンを登録します。</td>
+						<td>&nbsp;</td>
+					</tr>
+
+					<tr>
+						<td>プロジェクト管理者</td>
+						<td>プロジェクト管理者のアカウント名を指定します。<br/>指定するアカウントには、プロジェクト管理者の権限が必要です。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>アクセス制御</td>
+						<td>プロジェクトにユーザ毎のアクセス制限を行う場合は、「あり」を選択します。<br/>「なし」の場合は、ログインした全てのユーザが検索できるプロジェクトになります。</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>アクセス許可ユーザ</td>
+						<td>アクセス制御が「あり」の場合に、アクセスを許可するユーザを指定します。<br/>ユーザのアカウント名を、半角スペースまたは改行で区切って指定します。</td>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+				<p>プロジェクトの参照方法には以下の指定をします。</p>
+				<table width="90%">
+					<tr>
+						<th>参照方法</th>
+						<th>説明</th>
+					</tr>
+					<tr>
+						<td>local</td>
+						<td>CodeDepotをインストールしたコンピュータのファイルシステムにあるディレクトリを参照します。<br/> 「プロジェクトのパス名／URL」にはディレクトリへの絶対パスを指定します。<br/><span class="notice">指定したディレクトリは、"codedepot" ユーザに対して読み取り許可の設定が必要です。</span></td>
+					</tr>
+					<tr>
+						<td>Subversion</td>
+						<td>Subversion リポジトリにあるコードを参照します。<br/>「プロジェクトのパス名／URL」にはSubversion リポジトリの URL を指定します。<br/>Subversion リポジトリの URL は以下の書式で指定します。<br/>
+							<pre class="code">http://[username@]svn-server[:svn-port]/svn-repository-path/</pre>
+							<span class="notice">Subversion リポジトリに指定できるのは、WebDAV(http/https)プロトコルです。</span>
+						</td>
+					</tr>
+					<tr>
+						<td>CVS</td>
+						<td>CVS リポジトリにあるプロジェクトを参照します。<br/>「プロジェクトのパス名／URL」には、CVS リポジトリの URL とモジュール名を指定します。<br/>CVS リポジトリの URL とモジュール名は、半角空白文字で区切って指定します。<br/>CVS リポジトリの URL は以下の書式で指定します。<br/>
+							<pre class="code">:pserver:[username@]cvs-server[:cvs-port]/cvsroot-path/</pre>
+							<span class="notice">CVS リポジトリの URL に指定できるプロトコルは、pserver です。</span>
+						</td>
+					</tr>
+					<tr>
+						<td>Git</td>
+						<td>Git リポジトリにあるプロジェクトを参照します。<br/>「プロジェクトのパス名／URL」には、Git リポジトリの URL を指定します。<br/><span class="notice">Git リポジトリの URL に指定できるプロトコルは http、https、git、ssh です。</span></td>
+					</tr>
+					<tr>
+						<td>Jazz</td>
+						<td>IBM Ratinal Team Concert で管理されているプロジェクトを参照します。<br/>「プロジェクトのパス名／URL」には、リポジトリの URL とワークスペース名を指定します。<br/>リポジトリの URL とワークスペース名は、半角空白文字で区切って指定します。<br/>リポジトリの URL は以下のように指定します。<br/>
+							<pre class="code">https://jazz-server:9443/jazz/</pre>
+							<span class="notice">CodeDepot 専用のワークスペースを事前に作成しておく必要があります。</span>
+						</td>
+					</tr>
+				</table>
+				<p>検索インデックスの自動更新時刻の設定例を示します。</p>
+				<table>
+					<tr>
+						<th>設定例</th>
+						<th>説明</th>
+					</tr>
+					<tr>
+						<td>00 30 05 * * ?</td>
+						<td>毎朝5時30分に起動</td>
+					</tr>
+					<tr>
+						<td>00 00 */6 * * ?</td>
+						<td>毎日6時間毎に起動</td>
+					</tr>
+					<tr>
+						<td>00 00 18 ? * SUN</td>
+						<td>毎週日曜日の18時に起動</td>
+					</tr>
+					<tr>
+						<td>00 00 04 ? * MON-FRI</td>
+						<td>月曜～金曜日の4時に起動</td>
+					</tr>
+					<tr>
+						<td>00 00 02 1 * ?</td>
+						<td>毎月1日の2時00分に起動</td>
+					</tr>
+				</table>
+				<p>秒、分、時、日、月、週の設定を空白区切りで指定し、以下の書式で値を指定します。</p>
+				<ul>
+					<li>各フィールドは下記の範囲の値を指定します。</li>
+					<table>
+						<tr>
+							<th>秒</th>
+							<th>分</th>
+							<th>時</th>
+							<th>日</th>
+							<th>月</th>
+							<th>週</th>
+						</tr>
+						<tr>
+							<td>00～59</td>
+							<td>00～59</td>
+							<td>00～23</td>
+							<td>1～31</td>
+							<td>1～12</td>
+							<td>SUN～SAT</td>
+						</tr>
+					</table>
+					<li>"*" で全ての範囲を指定します。</li>
+					<li>"," で複数の値を指定できます。(例: 1,2,3)</li>
+					<li>"-" で範囲を指定できます。(例: 1-6)</li>
+					<li>"/" で間隔値を指定します。(例: */2 [0,2,4,&hellip;], 2/3 [2,5,8,&hellip;])</li>
+					<li>"?" は日、週の指定で、指定なしを意味します。</li>
+				</ul>
+				<p>登録したプロジェクトは、プロジェクト管理やコード検索結果で確認できます。<br/>登録したプロジェクトのコードを検索するには、検索インデックス更新処理を行います。</p>
+
+				<H3>プロジェクト管理</H3>
+				<p> プロジェクト管理では、プロジェクト名に指定したプロジェクトを検索し一覧表示します。<br/>一覧には、プロジェクトをアルファベット順に表示します。</p>
+				<p>プロジェクト一覧で「即時実行」ボタンをクリックすると検索インデックス更新処理を実行します。<br/>検索インデックス更新処理実行中は、処理の実行状態を表示します。検索インデックス更新処理が終わると、最終更新時刻を表示します。</p>
+				<p>プロジェクト一覧で、プロジェクト名をクリックするとプロジェクト詳細を表示します。<br/>プロジェクト詳細で編集ボタンをクリックすると、プロジェクトの内容を設定できます。<br/>プロジェクトを削除するには、プロジェクト詳細で削除ボタンをクリックします。</p>
+
+				<H3>検索インデックス更新処理</H3>
+				<p>コード検索をするためには検索インデックスファイルの作成が必要です。検索インデックスの作成は、検索インデクスの更新処理 で行います。検索インデクス更新処理は、プログラムファイルの構文解析を行い、検索インデックスを作成します。</p>
+				<p>プロジェクトの追加後に、プロジェクト管理から「検索インデクス更新処理」を実行します。コードを変更した場合やプロジェクト設定を変更した場合も、検索インデクス更新処理 を実行します。</p>
+				<p>検索インデクス更新処理 が完了後から、コードを検索できます。</p>
+				<p>検索インデクス更新処理 の実行結果は、ログ表示 で確認できます。検索インデクス更新処理 を定期的に自動実行するには、プロジェクト設定で 検索インデクスの自動更新時刻 を指定します。</p>
+				<fieldset class="notice2">
+					<legend>注意事項</legend>
+					<div>プロジェクト設定を変更した場合、アクセス許可ユーザの変更は即時有効になります。<br/>その他の設定は検索インデックス更新処理 の実行後に有効になります。すぐに 検索インデックス更新処理 を行うには、プロジェクト管理で 即時実行 をクリックします。</div>
+				</fieldset>
+				<h3>対応プログラム言語</h3>
+				<p>CodeDepot は次のプログラム言語のコードを検索できます。</p>
+				<table>
+					<tr>
+						<th>プログラム言語</th>
+						<th>ファイル拡張子</th>
+					</tr>
+					<tr>
+						<td>Java</td>
+						<td><tt>*.java *.jsp</tt></td>
+					</tr>
+					<tr>
+						<td>C/C++</td>
+						<td><tt>*.c *.cpp *.cc *.cxx *.c++<br />*.h *.hpp *.hh *.hxx *.h++</tt></td>
+					</tr>
+					<tr>
+						<td>C#</td>
+						<td><tt>*.cs</tt></td>
+					</tr>
+					<tr>
+						<td>VB.Net</td>
+						<td><tt>*.vb *.vba</tt></td>
+					</tr>
+					<tr>
+						<td>SQL</td>
+						<td><tt>*.sql</tt></td>
+					</tr>
+					<tr>
+						<td>Text</td>
+						<td><tt>*.txt *.xml *.properties readme*<br /> *.sh *.mk makefile* (&sect;) <br /></tt></td>
+					</tr>
+				</table>
+				<p style="font-size: 80%; margin: 0em 2em;">(&sect;) PDF, MS-Office, OpenOffice の文書ファイルも Text として検索できます。</p>
+				<p>プロジェクトに含まれる上記以外のファイルは検索インデックスには登録されないため、検索できません。zip や tar などのアーカイブ形式のファイルも検索対象外です。アーカイブ内のファイルを検索対象にする場合は、アーカイブを展開しておく必要があります。プロジェクト中のシンボリックリンクファイルも検索対象外です。</p>
+
+				<h3>差分更新処理</h3>
+				<p>既に検索インデクスが作成されているプロジェクトに 検索インデクス更新処理 を実行すると、前回の処理から更新されたファイルのみに処理を行います。プロジェクト設定を変更した場合は、プロジェクトの全てのファイルに対して 検索インデックス更新処理 を行います。</p>
+
+				<h3>C/C++ プリプロセッサ定義</h3>
+				<p>C/C++ 言語では、プリプロセッサの機能によりヘッダファイルをインクルードしたり、条件コンパイルを行う事が可能です。CodeDepot では、コードの構文解析を行う際にヘッダに定義されているデータ型やマクロ定義のを利用します。より正しく構文解析を行うにはプリプロセッサのオプション設定が重要です。</p>
+				<p>CodeDepot では、プリプロセッサのオプションを指定するために、プロジェクト設定で指定した参照先のルートディレクトリにある次のファイルを参照します。</p>
+				<table>
+					<tr>
+						<th>プログラム言語</th>
+						<th>ファイル名</th>
+					</tr>
+					<tr>
+						<td>C</td>
+						<td>.c_options</td>
+					</tr>
+					<tr>
+						<td>C++</td>
+						<td>.cpp_options</td>
+					</tr>
+				</table>
+				<p>上記のファイルには、下記の形式で、1行毎にプリプロセッサのオプションを指定します。</p>
+				<table>
+					<tr>
+						<th>オプション</th>
+						<th>説明</th>
+					</tr>
+					<tr>
+						<td><b>-I</b>dir</td>
+						<td>インクルードパスの指定</td>
+					</tr>
+					<tr>
+						<td><b>-D</b>macro</td>
+						<td>マクロ定義の指定</td>
+					</tr>
+				</table>
+
+				<h3>オプション検索対象指定</h3>
+				<p>プロジェクトの検索対象を限定したい場合に設定します。</p>
+				<ul>
+					<li>設定ファイル</li>
+					<PRE CLASS="file">/CodeDepotのディレクトリ/src/main/resources/index.properties</PRE>
+					<li>検索対象限定</li>
+					<PRE CLASS="file">includePath = .FILES </PRE>
+					<p>検索対象ディレクトリに includePath で指定されたファイルが存在すると、そのファイル内にリストされているディレクトリやファイルを検索対象とします。ファイルの書式は、検索ディレクトリ内のディレクトリ名やファイル名を改行文字で区切った形式です。パス名の先頭に "/" や "./" が含まれていても構いません。</p>
+					<li>検索対象除外</li>
+					<PRE CLASS="file">ignoreList = 除外ファイル </PRE>
+					<p>ignoreListで指定された除外ファイルは検索インデックスから削除され、検索画面から検索できなくなります。</p>
+				</ul>
+			</div>
+
+			<DIV id="admin_logging">
+				<H2>ログ表示</H2>
+				<p>CodeDepot では、プロジェクト管理で追加したコードを構文解析し検索インデックスファイルを作成します。<br/>ログ表示では、検索インデックス更新処理 実行結果を表示します。</p>
+				<p>プロジェクト名を指定すると、指定したプロジェクトの処理結果のみを表示します。<br/>プロジェクト管理者の場合は、管理対象のプロジェクトのみを表示します。</p>
+				<fieldset class="notice">
+					<legend>注意事項</legend>
+					<div>10,000件を越える過去のログは自動的に削除されるため、ログ表示に表示されません。</div>
+				</fieldset>
+			</DIV>
+			<DIV id="admin_scm">
+				<H2>バージョン管理連携</H2>
+				<p>CodeDepot は下記のバージョン管理システムと連携機能します。</p>
+				<ul>
+					<li>Subversion</li>
+					<li>CVS</li>
+					<li>Git</li>
+					<li>IBM Ratinal Team Concert</li>
+				</ul>
+				<p>バージョン管理連携を利用するには、各バージョン管理システムのクライアントプログラムのインストールが必要です。</p>
+				<p>IBM Ratinal Team Concert と連携するには、IBM Ratinal Team Concert で提供されているクライアントパッケージを別途インストールします。下記の設定ファイルに、IBM Ratinal Team Concert をインストールしたディレクトリパスを設定します。</p>
+				<UL>
+					<LI>設定ファイル</LI>
+					<PRE CLASS="file">/CodeDepotのディレクトリ/src/main/resources/application.properties</PRE>
+					<LI>設定例</LI>
+					<PRE CLASS="file">JAZZ_PATH=/opt/IBM/jazz/scmtools/eclipse</PRE>
+				</UL>
+			</DIV>
+			<DIV id="admin_auth">
+				<H2>外部認証連携</H2>
+				<p>CodeDepot は以下のユーザ認証を利用できます。</p>
+				<dl>
+					<dt>LDAP認証</dt>
+					<dd>既存の LDAP サーバにアクセスし、LDAP 認証によりユーザ認証を行います。</dd>
+					<dd>Active Directory と連携する場合も、LDAP 認証を利用します。</dd>
+					<dt>HTTP BASIC認証</dt>
+					<dd>既存の HTTP サーバにアクセスし、BASIC 認証によりユーザ認証を行います。</dd>
+				</dl>
+				<fieldset class="notice">
+					<legend>注意事項</legend>
+					<div>両方の認証機能を同時に利用できません。</div>
+				</fieldset>
+
+				<H3>LDAP認証連携</H3>
+				<p>LDAP認証連携を利用するには、連携する LDAP サーバの情報を設定して、LDAP認証連携 を有効に設定します。</p>
+				<p>LDAP認証連携を設定するには、以下の設定ファイルを編集します。</p>
+				<ul>
+					<PRE class="file">/CodeDepotのディレクトリ/src/main/resources/ldap.properties</PRE>
+				</ul>
+				<p>このファイルに以下のパラメタを設定します。</p>
+				<table>
+					<tr>
+						<th>パラメタ名</th>
+						<th>説明</th>
+						<th>デフォルト値</th>
+					</tr>
+					<tr>
+						<td>LDAP_AUTH</td>
+						<td>LDAP認証機能を有効にする場合は、on に設定します。</td>
+						<td>off</td>
+					</tr>
+					<tr>
+						<td>LDAP_REGIST</td>
+						<td>LDAP認証が成功したユーザのアカウントを自動で登録する場合は、on に設定します。</td>
+						<td>off</td>
+					</tr>
+					<tr>
+						<td>LDAP_URL</td>
+						<td>連携するLDAPサーバのURL を設定します。</td>
+						<td>ldap://127.0.0.1:389/</td>
+					</tr>
+					<tr>
+						<td>LDAP_BASE_DN</td>
+						<td>連携するLDAPサーバの識別名 (DN) を設定します。</td>
+						<td>なし</td>
+					</tr>
+					<tr>
+						<td>LDAP_USER_DN</td>
+						<td>認証するユーザの識別名(DN) を設定します。<br> 文字列 %s をユーザのログイン名に置換します。</td>
+						<td>なし</td>
+					</tr>
+					<tr>
+						<td>LDAP_TIMEOUT</td>
+						<td>LDAP接続のタイムアウト値（ミリ秒)。</td>
+						<td>10秒</td>
+					</tr>
+				</table>
+				<p>設定例を以下に示します。</p>
+				<pre class="file">LDAP_AUTH = on
+LDAP_REGIST = on
+LDAP_URL = ldap://127.0.0.1:389/
+LDAP_BASE_DN = ou=People,o=my-domain
+LDAP_USER_DN = uid=%s,ou=People,o=my-domain
+LDAP_TIMEOUT = 5000</pre>
+				<p>設定ファイルの変更は即時に有効となります。</p>
+
+				<h3>Active Directory 連携</h3>
+				<p>Active Directory と連携する場合は、LDAP認証連携を設定します。</p>
+				<p>Active Directory では、以下のコマンドを実行することで、ユーザの LDAP識別名 (DN) を取得することができます。ここで取得した値を利用して、LDAP_BASE_DN ならびに LDAP_USER_DN を設定します。</p>
+				<pre class="command">dsquery.exe user</pre>
+				<p>Active Directory での設定例を以下に示します。</p>
+				<pre class="file">LDAP_AUTH = on
+LDAP_REGIST = on
+LDAP_URL = ldap://your-domain-server:389/
+LDAP_BASE_DN = CN=Users,DC=your-domain
+LDAP_USER_DN = CN=%s,CN=Users,DC=your-domain
+LDAP_TIMEOUT = 5000</pre>
+
+				<H3>HTTP BASIC 認証連携</H3>
+				<p>HTTP BASIC 認証連携を利用するには、連携する HTTP サーバを設定し、HTTP BASIC 認証連携を有効に設定します。</p>
+				<p>HTTP BASIC 認証連携を設定するには、以下のファイルを編集します。</p>
+				<ul>
+					<PRE class="file">/CodeDepotのディレクトリ/src/main/resources/auth.properties</PRE>
+				</ul>
+				<p>このファイルに以下のパラメタを設定します。</p>
+				<table>
+					<tr>
+						<th>パラメタ名</th>
+						<th>説明</th>
+						<th>デフォルト値</th>
+					</tr>
+					<tr>
+						<td>HTTP_AUTH</td>
+						<td>HTTP BASIC 認証機能を有効にする場合は、on に設定します。</td>
+						<td>off</td>
+					</tr>
+					<tr>
+						<td>HTTP_REGIST</td>
+						<td>HTTP BASIC 認証が成功したユーザのアカウントを自動で登録する場合は、on に設定します。</td>
+						<td>off</td>
+					</tr>
+					<tr>
+						<td>HTTP_URL</td>
+						<td>連携するHTTP サーバの URL を設定します。</td>
+						<td>なし</td>
+					</tr>
+					<tr>
+						<td>HTTP_USER</td>
+						<td>認証するユーザのアカウント名を設定します。<br /> 文字列 %s をユーザのログイン名に置換します。</td>
+						<td>%s</td>
+					</tr>
+					<tr>
+						<td>HTTP_REALM</td>
+						<td>指定した値を HTTP BASIC 認証の realm に指定します。<br/>
+							<td>指定なし</td>
+					</tr>
+					<tr>
+						<td>HTTP_TIMEOUT</td>
+						<td>HTTP接続のタイムアウト値（ミリ秒)。</td>
+						<td>10秒</td>
+					</tr>
+				</table>
+				<fieldset class="notice" style="margin-left: 2em;">
+					<legend>注意事項</legend>
+					<div>HTTP BASIC 認証機能を利用するには、HTTP_URL の設定は必須です。</div>
+				</fieldset>
+				<p>設定例を以下に示します。</p>
+				<pre class="file">HTTP_AUTH = on
+HTTP_REGIST = on
+HTTP_URL = http://your-http-server/basic-authenticated-page/
+HTTP_TIMEOUT = 5000</pre>
+				<p>設定ファイルの変更は即時に有効となります。</p>
+			</DIV>
+			<DIV id="admin_ssl">
+				<H2>SSL 連携</H2>
+				<h3>Apache HTTPサーバとの連携</h3>
+				<p>CodeDepot へのアクセスには HTTP プロトコルを利用しますが、Apache HTTP サーバを利用する事で、HTTPSプロトコルによるアクセスを提供する事ができます。</p>
+				<p>Apache HTTP サーバの導入手順ならびにApache HTTP の SSL 設定については、 Apache HTTP サーバのマニュアルを参考にしてください。以下は Apache HTTP サーバ と CodeDepot の連携方法について説明します。</p>
+				<p>Apache HTTP サーバと CodeDepot を連携するには mod_proxy_ajp を利用します。mod_proxy_ajp は、Apache HTTP サーバの標準モジュールとして提供されています。</p>
+				<p>mod_proxy_ajp の設定は下記のファイルを編集します。</p>
+				<pre class="file">/etc/httpd/conf.d/proxy_ajp.conf</pre>
+				<p>mod_proxy_ajp を利用するには、Apache の設定ファイルで mod_proxy_ajp モジュールを有効に設定します。</p>
+				<pre class="file">LoadModule proxy_ajp_module modules/mod_proxy_ajp.so</pre>
+				<p>mod_proxy_ajp と CodeDepot の連携設定を行います。</p>
+				<pre class="file">&lt;Location /codedepot/&gt;
+	ProxyPass /codedepot/ ajp://localhost:8009/codedepot/
+&lt;/Location&gt;</pre>
+
+				<H3>Subversion での SSL 接続</H3>
+				<p>CodeDepot は、プロジェクトの参照に Subversion のリポジトリへの接続に SSL プロトコル を利用することができます。</p>
+				<p>Subversion で SSL プロトコルを利用するには、事前に SSL のサーバ証明書を 承認しておく必要があります。</p>
+				<p>サーバ証明書を承認するには、CodeDepot をインストールしたコンピュータに<b class="notice">root</b>ユーザでログイン後、su コマンドでユーザを CodeDepot を実行するユーザに変更します。</p>
+				<pre class="command">su - codedepotユーザ</pre>
+				<p>次に、svn コマンドで Subversion リポジトリに接続します。</p>
+				<pre class="command">svn info --username <b>login-name</b>  \
+    https://<b>subversion-host</b>/<b>repository-path</b>/</pre>
+				<p><b>login-name</b>には、Subversion リポジトリのログインパスワードを入力します。</p>
+				<p>上記のコマンドを実行すると、証明書を承認するかどうかのダイアログが表示されるので、"常に承認"を選択します。</p>
+
+				<h3>外部認証連携での SSL 接続</h3>
+				<p>CodeDepot は、外部認証連携により既存のLDAP認証ならびにHTTP BASIC認証を利用してユーザ認証を行う時の認証サーバとの接続に SSL プロトコルを利用することができます。</p>
+				<p>接続する認証サーバのSSL証明書が公開の認証局に署名された証明書でない場合 (自己証明書やプライベート認証局に署名された証明書を利用している場合)、認証サーバの認証書または認証局の証明書を事前に登録しておく必要があります。</p>
+				<p>SSL 証明書を登録するには、JDK に付属する keytool コマンドを利用します。</p>
+				<p>登録済みの SSL 証明書は、次のコマンドで確認することができます。</p>
+				<pre class="command">keytool -list \
+    -keystore $JAVA_HOME/jre/lib/security/cacerts \
+    -storepass changeit</pre>
+				<p>新しい SSL 証明書を登録するには、次のコマンドを実行します。</p>
+				<pre class="command">keytool -import \
+    -keystore $JAVA_HOME/jre/lib/security/cacerts \
+    -storepass changeit -trustcacerts \
+    -alias <b>your-cetfitication-name</b> \
+    -file <b>your-cetfitication-file.pem</b></pre>
+				<p><b>your-cetfitication-file.pem </b>に認証サーバのSSL 認証書または認証局の SSL 証明書を保存したファイルのパス名を指定します。<b>your-cetfitication-name </b>には、登録する認証書に対する名称を指定します。</p>
+				<p>JDK の証明書ストアを変更した場合は、CodeDepot を再起動して下さい。</p>
+			</DIV>
+			<DIV id="admin_logs">
+				<H2>ログファイル</H2>
+				<p>CodeDepot のログファイルは、Apache Tomcat のlogsディレクトリに保存されます。</p>
+				<p>CodeDepot のログファイルは日付毎のファイル名で保存されており、 ログファイルの内容はテキスト形式で書かれています。</p>
+				<table>
+					<tr>
+						<th>ファイル名</th>
+						<th>説明</th>
+					</tr>
+					<tr>
+						<td><tt>access_log.YYYY-MM-DD.txt</tt></td>
+						<td>ウェブのアクセスログです。</td>
+					</tr>
+					<tr>
+						<td><tt>application.YYYY-MM-DD.log</tt></td>
+						<td>CodeDepot アプリケーションのログです。</td>
+					</tr>
+					<tr>
+						<td><tt>indexer.YYYY-MM-DD.log</tt></td>
+						<td>検索インデックス更新処理のログです。</td>
+					</tr>
+				</table>
+				<p>上記以外のファイルは、アプリケーションサーバのログファイルです。</p>
+			</DIV>
+		</DIV>
+	</DIV>
+</BODY>
+
+</HTML>

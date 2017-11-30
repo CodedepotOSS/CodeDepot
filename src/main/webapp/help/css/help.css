@@ -1,0 +1,273 @@
+
+* {
+	box-sizing: border-box;
+}
+body {
+	margin: 0 auto;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	font-size: 16px;
+}
+
+.note ul li {
+    line-height: 105%;
+}
+
+.main_menu {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 40px;
+	padding-top: 8px;
+}
+.main_menu > .item {
+	display: inline-block;
+    font-size: 16px;
+	line-height: 16px;
+	color: black;
+	text-decoration: none;
+	min-width: 150px;
+	margin: 0 4px;
+	text-align: center;
+	padding: 8px;
+	border: solid 1px #cecece;
+	border-bottom: none;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	background-color: #e5e5e5;
+}
+.main_menu > span.item {
+	border-bottom: solid 1px white;
+	background-color: white;
+}
+
+.container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	overflow: hidden;
+	width: 100%;
+	height: calc(100% - 40px);
+	padding: 8px 0;
+}
+.container > .body {
+	overflow: scroll;
+	width: calc(100% - 200px);
+}
+
+.sub_menu {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: stretch;
+	width: 200px;
+}
+.sub_menu > .item {
+	display: block;
+	white-space: nowrap;
+	padding: 4px 24px;
+	text-decoration: none;
+	color: black;
+}
+.sub_menu > .item:hover {
+	background-color: lightgray;
+}
+
+p {
+	width: 90%;
+	margin: 0.5em auto;
+}
+
+.code {
+    color: black;
+}
+
+fieldset {
+    width: 90%;
+    border: solid 1px #cccccc;
+	margin: 16px auto;
+}
+
+ul {
+    margin: 0;
+	padding: 4px;
+}
+
+ul li {
+	width: 90%;
+    margin: 0 auto;
+    padding: 4px;
+}
+
+fieldset ul {
+    margin: 0px 0px;
+}
+
+fieldset li {
+    margin: 0px 0px;
+    padding: 1px 0px;
+}
+
+dl dt {
+    font-weight: bold;
+	font-size: 18px;
+    margin-top: 1em;
+    width: 20em;
+}
+
+dl dd {
+	width: 90%;
+	margin: 0 auto;
+}
+
+table {
+	margin: 32px auto;
+	width: 90%;
+}
+
+table caption {
+    background-color: #5e9bff;
+    font-weight: bolder;
+}
+
+tr th {
+    background-color: #d0d0d0;
+    font-weight: bold;
+    padding: 0px 1em;
+    text-align: center;
+}
+
+tr td {
+    background-color: #d0d0d0;
+    background-color: #f0f0f0;
+    font-weight: normal;
+    padding: 0px 1em;
+}
+
+h1 {
+    width: 100%;
+    text-align: center;
+    text-indent: 0px;
+    font-style: italic;
+    padding: 4px 0px;
+    margin: 0px 0;
+}
+
+h2, .sub_menu > .item {
+    width: 95%;
+    background-color:#dae8f3;
+    border-left: solid 8px #527efb;
+    text-align: left;
+    text-indent: 2px;
+    padding: 4px 0;
+    margin: 10px 0;
+}
+
+h3 {
+    width: 95%;
+    border-bottom: solid 1px #e89d60;
+    text-align: left;
+    text-indent: 2px;
+    padding: 8px 0px 0px 0px;
+    margin: 4px 0px 4px 0px;
+}
+
+h4 {
+    width: 95%;
+    text-align: left;
+    text-indent: 4px;
+    padding: 2px 0px 2px 0px;
+    margin: 4px 0px 2px 0px;
+}
+
+.important {
+    color: red;
+}
+
+.file {
+	width: 90%;
+	margin: 0 auto;
+    padding: 4px 8px;
+    background-color:#fafafa;
+    line-height: 140%;
+    color: black;
+}
+
+.command {
+    margin: 4px auto;
+    padding: 4px 8px 4px 8px;
+    background-color:#f7f7f7;
+    line-height: 140%;
+    color: black;
+	width: 90%;
+}
+
+.location {
+    width: 400px;
+    margin: 4px 4em 4px 2em;
+    padding: 4px 8px 4px 8px;
+    background-color:#ffcece;
+    border: dotted 1px #ff0000;
+    line-height: 140%;
+    color: black;
+}
+
+.requirement {
+    width: 400px;
+    margin-top: 1px;
+}
+
+.requirement th {
+    width: 30%;
+    text-align: left;
+    margin: 0px 0px;
+}
+
+.requirement td {
+    text-align: left;
+    margin: 0px 0px;
+}
+
+.notice {
+    color: #ff0000;
+	text-align: center;
+}
+.notice2 {
+	width: 90%;
+	margin: 16px auto;
+}
+
+.body .hlist {
+    list-style-type: square;
+    padding: 0px 0px;
+    margin: 0px 0px 0px 4em;
+    width: 80%;
+}
+
+.body .hlist li {
+    padding: 4px 0px;
+    margin: 0px 0px;
+    width: 40%;
+    float: left;
+}
+
+.body .vlist {
+    list-style-type: square;
+    padding: 0px 0px;
+    margin: 0px 0px 0px 4em;
+    width: 60%;
+}
+
+.body .vlist li {
+    padding: 4px 0px;
+    margin: 0px 0px;
+    width: 100%;
+}
+
+.sample {
+    margin-left: 4em;
+    color: #7B8;
+}

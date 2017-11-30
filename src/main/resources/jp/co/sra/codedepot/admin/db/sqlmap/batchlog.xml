@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2009 SRA (Software Research Associates, Inc.)
+
+ This file is part of CodeDepot.
+ CodeDepot is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.0
+ as published by the Free Software Foundation and appearing in
+ the file GPL.txt included in the packaging of this file.
+
+ CodeDepot is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CodeDepot. If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE sqlMap
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="batchlog">
+
+    <select id="selectProjectTitle" parameterClass="java.util.Map" resultClass="jp.co.sra.codedepot.admin.db.entity.BatchLogEntity">
+        SELECT
+             DISTINCT(p.name) <!-- 識別子名 -->
+            ,p.title      <!-- 題名 -->
+        FROM
+             batchlog b  <!-- バッチ処理ログ情報テーブル -->
+            ,project  p  <!-- プロジェクト情報テーブル -->
+        WHERE
+            b.project = p.name
+            AND p.del_flag = FALSE
+            <isPropertyAvailable prepend="AND" property="admin">
+                p.admin = #admin#
+            </isPropertyAvailable>
+        ORDER BY
+            p.title
+    </select>
+
+    <select id="selectLogList" parameterClass="java.util.Map" resultClass="jp.co.sra.codedepot.admin.db.entity.BatchLogEntity">
+        SELECT
+             b.stime      <!-- バッチ開始時刻 -->
+            ,b.etime      <!-- バッチ終了時刻 -->
+            ,b.period     <!-- 処理時間 (秒) -->
+            ,b.status     <!-- 終了状態 -->
+            ,b.msg        <!-- メッセージ -->
+            ,p.title      <!-- 題名 -->
+        FROM
+             batchlog b  <!-- バッチ処理ログ情報テーブル -->
+       	LEFT JOIN project  p  <!-- プロジェクト情報テーブル -->
+		ON  b.project = p.name
+        WHERE
+        	(b.project is null or (
+        	p.del_flag = false ))
+            <isPropertyAvailable prepend="AND" property="title">
+		LOWER(p.title) like '%'||#title#||'%'
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="AND" property="name">
+                p.name = #name#
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="AND" property="admin">
+                p.admin = #admin#
+            </isPropertyAvailable>
+            <isPropertyAvailable prepend="AND" property="status">
+                b.status = #status#
+            </isPropertyAvailable>
+        ORDER BY
+            b.etime DESC
+        <isPropertyAvailable property="limit">
+	        <isPropertyAvailable property="offset">
+	        LIMIT
+	            CASE WHEN (#limit# + #offset# > 10000) THEN (10000 - #offset#)
+	            ELSE #limit#
+	            END
+	        OFFSET #offset#
+	        </isPropertyAvailable>
+        </isPropertyAvailable>
+    </select>
+
+  <select id="selectLogCount" parameterClass="java.util.Map"
+  		resultClass="java.lang.Integer">
+	    	SELECT
+	            CASE WHEN COUNT(1) > 10000 THEN 10000
+	            ELSE COUNT(1)
+	            END
+	    	FROM
+	             batchlog b  <!-- バッチ処理ログ情報テーブル -->
+	        LEFT JOIN project  p  <!-- プロジェクト情報テーブル -->
+      		ON  b.project = p.name
+        	WHERE
+      			(b.project is null or (
+	         	p.del_flag = false ))
+	            <isPropertyAvailable prepend="AND" property="title">
+			LOWER(p.title) like '%'||#title#||'%'
+	            </isPropertyAvailable>
+	            <isPropertyAvailable prepend="AND" property="name">
+	                p.name = #name#
+	            </isPropertyAvailable>
+	            <isPropertyAvailable prepend="AND" property="admin">
+	                p.admin = #admin#
+	            </isPropertyAvailable>
+	            <isPropertyAvailable prepend="AND" property="status">
+	                b.status = #status#
+	            </isPropertyAvailable>
+  	</select>
+</sqlMap>

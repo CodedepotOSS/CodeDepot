@@ -1,0 +1,198 @@
+/*
+ Copyright (c) 2009 SRA (Software Research Associates, Inc.)
+
+ This file is part of CodeDepot.
+ CodeDepot is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3.0
+ as published by the Free Software Foundation and appearing in
+ the file GPL.txt included in the packaging of this file.
+
+ CodeDepot is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CodeDepot. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#query { width: 80%; }
+#advanced { font-size: xx-small; }
+
+#main {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	overflow: hidden;
+	flex: 1;
+	background-color: white;
+}
+
+#contentContainer {
+	width: calc(100% - 335px);
+	height: 100%;
+	overflow: hidden;
+}
+.tabWrapper {
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+.tabWrapper > .tabContent {
+	display: flex;
+	flex-direction: column;
+}
+.tabWrapper .tabody{
+	overflow: auto;
+	height: 100%;
+	width: calc(100% - 2em);
+	padding: 0 1em;
+}
+
+#infoContainer {
+	width: 335px;
+	height: 100%;
+	overflow: hidden;
+}
+
+.ui-tabs {
+	padding: 0;
+}
+.ui-tabs .ui-tabs-nav {
+    background: transparent;
+	border:none;
+	height: 21px;
+	padding: 0;
+}
+.ui-tabs .ui-tabs-nav li a {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 10px;
+	font-weight: normal;
+	line-height: 10px;
+}
+.ui-tabs .ui-tabs-panel {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	padding: 0;
+	background-color: #fefefe;
+}
+
+.ui-widget-content {
+	border: none;
+	display: flex;
+	flex-direction: column;
+}
+.ui-state-default, .ui-widget-content .ui-state-default {
+	border: none;
+	color: black;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus,
+.ui-widget-content .ui-state-focus {
+	border: none;
+	color: black;
+}
+.ui-state-active, .ui-widget-content .ui-state-active {
+	border: none;
+	color: black;
+}
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+	color: black;
+}
+
+
+/* showing file information */
+.fileinfo {
+	background-color: #f8fbfc;
+	height: 28px;
+}
+.fileinfo table {
+	width: 100%;
+}
+.fileinfo td {
+	white-space: nowrap;
+	line-height: 10px;
+	font-size: 10px;
+	padding:2px;
+}
+
+.srcPane {
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+/* showing code */
+.lnPane {
+    width: 4em;
+    text-align: right;
+    padding-right: 0.40em;
+    border-right: 1px dotted silver;
+    color: gray;
+    font-size: 10.5px;
+    line-height: 14.5px;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.lnPane pre {
+    font-size: 10.5px;
+    line-height: 14.5px;
+}
+
+.lnPane pre span {
+    display: inline-block;
+    font-size: 10.5px;
+    line-height: 14.5px;
+}
+
+.codePane {
+    padding-left: 0.20em;
+    text-align: left;
+    font-size: 10.5px;
+    line-height: 14.5px;
+	overflow-x: auto;
+	overflow-y: hidden;
+	vertical-align: top;
+	display: inline-block;
+	width: calc(100% - 5em);
+}
+
+.codePane pre {
+    font-size: 10.5px;
+    line-height: 14.5px;
+}
+
+.codePane pre span {
+    display: inline-block;
+    font-size: 10.5px;
+    line-height: 14.5px;
+    max-height: 14.5px;
+}
+
+.errmsg, .bar {
+	background-color: #f8fbfc;
+	height: 28px;
+}
+.errmsg {
+	color: red;
+}
+
+#refinement {
+	font-size: small;
+}
+
+#ui-dialog-title-refinement {
+	font-size: 11px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	padding:0.1em 0.1em 0.1em 0.5em;
+}
