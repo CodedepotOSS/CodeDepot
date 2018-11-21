@@ -52,7 +52,7 @@ Subversion, Git, CVS と IBM Jazz といったバージョン管理システム�
 
 ## CodeDepotの製品版のページ
 
-[ソースコード検索エンジン CodeDepot - 株式会社SRA](http://www.sra.co.jp/codedepot)
+[ソースコード検索エンジン CodeDepot - 株式会社SRA](http://www3.sra.co.jp/codedepot)
 
 ## お問い合せ
 
